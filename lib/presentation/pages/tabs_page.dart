@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import '../../provider/tab_type_provider.dart';
+import '../pages/home_page.dart';
+import '../pages/learning_record_page.dart';
+import '../pages/materials_page.dart';
+
+class TabsPage extends ConsumerWidget {
+  const TabsPage({Key? key}) : super(key: key);
+
+  final List<Map<String, dynamic>> _pages = const [
+    {'page': LearningRecordPage(), 'title': '学習記録'},
+    {'page': HomePage(), 'title': 'ホーム'},
+    {'page': MaterialsPage(), 'title': 'マイページ'}
+  ];
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final TabType tabType = ref.watch(tabTypeProvider);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_pages[tabType.index]['title']),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Record',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'My Page',
+          ),
+        ],
+        onTap: (int selectIndex) {
+          ref.watch(tabTypeProvider.state).state = TabType.values[selectIndex];
+        },
+        currentIndex: tabType.index,
+      ),
+      body: _pages[tabType.index]['page'],
+    );
+  }
+}
