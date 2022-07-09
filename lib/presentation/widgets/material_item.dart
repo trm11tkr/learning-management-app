@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../provider/material_provider.dart';
 import '../../model/entities/material.dart';
 
 class MaterialItem extends HookConsumerWidget {
@@ -36,7 +37,9 @@ class MaterialItem extends HookConsumerWidget {
                   Icons.delete,
                   color: Theme.of(context).errorColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  ref.watch(materialProvider.notifier).remove(material.id);
+                },
               ),
             ],
           ),
