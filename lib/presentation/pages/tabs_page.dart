@@ -29,15 +29,15 @@ class TabsPage extends ConsumerWidget {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Record',
+            label: '教材',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'ホーム',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            label: 'My Page',
+            label: 'マイページ',
           ),
         ],
         onTap: (int selectIndex) {
