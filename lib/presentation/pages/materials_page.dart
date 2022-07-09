@@ -22,7 +22,7 @@ class MaterialsPage extends HookConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return const EditMaterialPage();
+            return EditMaterialPage();
           }));
         },
         child: const Icon(Icons.add),

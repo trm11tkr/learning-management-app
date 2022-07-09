@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../pages/edit_material_page.dart';
 import '../../provider/material_provider.dart';
 import '../../model/entities/material.dart';
 
@@ -30,7 +31,14 @@ class MaterialItem extends HookConsumerWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return EditMaterialPage(
+                      material: material,
+                    );
+                  }));
+                },
               ),
               IconButton(
                 icon: Icon(
