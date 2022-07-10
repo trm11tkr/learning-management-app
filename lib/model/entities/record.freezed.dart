@@ -20,8 +20,9 @@ Record _$RecordFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Record {
-  MaterialData get material => throw _privateConstructorUsedError;
-  String get learningTime => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  String get materialId => throw _privateConstructorUsedError;
+  int get learningTime => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
@@ -35,12 +36,11 @@ abstract class $RecordCopyWith<$Res> {
   factory $RecordCopyWith(Record value, $Res Function(Record) then) =
       _$RecordCopyWithImpl<$Res>;
   $Res call(
-      {MaterialData material,
-      String learningTime,
+      {String id,
+      String materialId,
+      int learningTime,
       String description,
       DateTime createdAt});
-
-  $MaterialDataCopyWith<$Res> get material;
 }
 
 /// @nodoc
@@ -53,20 +53,25 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? material = freezed,
+    Object? id = freezed,
+    Object? materialId = freezed,
     Object? learningTime = freezed,
     Object? description = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
-      material: material == freezed
-          ? _value.material
-          : material // ignore: cast_nullable_to_non_nullable
-              as MaterialData,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      materialId: materialId == freezed
+          ? _value.materialId
+          : materialId // ignore: cast_nullable_to_non_nullable
+              as String,
       learningTime: learningTime == freezed
           ? _value.learningTime
           : learningTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -77,13 +82,6 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
               as DateTime,
     ));
   }
-
-  @override
-  $MaterialDataCopyWith<$Res> get material {
-    return $MaterialDataCopyWith<$Res>(_value.material, (value) {
-      return _then(_value.copyWith(material: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -92,13 +90,11 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       __$$_RecordCopyWithImpl<$Res>;
   @override
   $Res call(
-      {MaterialData material,
-      String learningTime,
+      {String id,
+      String materialId,
+      int learningTime,
       String description,
       DateTime createdAt});
-
-  @override
-  $MaterialDataCopyWith<$Res> get material;
 }
 
 /// @nodoc
@@ -112,20 +108,25 @@ class __$$_RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? material = freezed,
+    Object? id = freezed,
+    Object? materialId = freezed,
     Object? learningTime = freezed,
     Object? description = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_$_Record(
-      material: material == freezed
-          ? _value.material
-          : material // ignore: cast_nullable_to_non_nullable
-              as MaterialData,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      materialId: materialId == freezed
+          ? _value.materialId
+          : materialId // ignore: cast_nullable_to_non_nullable
+              as String,
       learningTime: learningTime == freezed
           ? _value.learningTime
           : learningTime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -142,7 +143,8 @@ class __$$_RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Record with DiagnosticableTreeMixin implements _Record {
   const _$_Record(
-      {required this.material,
+      {required this.id,
+      required this.materialId,
       required this.learningTime,
       required this.description,
       required this.createdAt});
@@ -151,9 +153,11 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
       _$$_RecordFromJson(json);
 
   @override
-  final MaterialData material;
+  final String id;
   @override
-  final String learningTime;
+  final String materialId;
+  @override
+  final int learningTime;
   @override
   final String description;
   @override
@@ -161,7 +165,7 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Record(material: $material, learningTime: $learningTime, description: $description, createdAt: $createdAt)';
+    return 'Record(id: $id, materialId: $materialId, learningTime: $learningTime, description: $description, createdAt: $createdAt)';
   }
 
   @override
@@ -169,7 +173,8 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Record'))
-      ..add(DiagnosticsProperty('material', material))
+      ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('materialId', materialId))
       ..add(DiagnosticsProperty('learningTime', learningTime))
       ..add(DiagnosticsProperty('description', description))
       ..add(DiagnosticsProperty('createdAt', createdAt));
@@ -180,7 +185,9 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Record &&
-            const DeepCollectionEquality().equals(other.material, material) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality()
+                .equals(other.materialId, materialId) &&
             const DeepCollectionEquality()
                 .equals(other.learningTime, learningTime) &&
             const DeepCollectionEquality()
@@ -192,7 +199,8 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(material),
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(materialId),
       const DeepCollectionEquality().hash(learningTime),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(createdAt));
@@ -210,17 +218,20 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
 
 abstract class _Record implements Record {
   const factory _Record(
-      {required final MaterialData material,
-      required final String learningTime,
+      {required final String id,
+      required final String materialId,
+      required final int learningTime,
       required final String description,
       required final DateTime createdAt}) = _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
 
   @override
-  MaterialData get material;
+  String get id;
   @override
-  String get learningTime;
+  String get materialId;
+  @override
+  int get learningTime;
   @override
   String get description;
   @override
