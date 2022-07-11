@@ -7,6 +7,7 @@ import '../widgets/record_item.dart';
 import '../../model/entities/record.dart';
 import '../../provider/record_provider.dart';
 import '../../provider/material_provider.dart';
+import '../pages/edit_record_page.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,6 +28,14 @@ class HomePage extends ConsumerWidget {
           );
         },
         itemCount: recordList.length,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return const EditRecordPage();
+          }));
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

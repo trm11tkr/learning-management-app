@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../provider/material_provider.dart';
 import '../../model/entities/record.dart';
+import '../pages/edit_record_page.dart';
 
 class RecordItem extends HookConsumerWidget {
   const RecordItem({Key? key, required this.record, required this.materialName})
@@ -34,7 +35,12 @@ class RecordItem extends HookConsumerWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return EditRecordPage(record: record);
+                  }));
+                },
               ),
               IconButton(
                 icon: Icon(
