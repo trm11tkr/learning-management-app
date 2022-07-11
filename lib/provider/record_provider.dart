@@ -52,4 +52,9 @@ class RecordList extends StateNotifier<List<Record>> {
   void remove(String id) {
     state = state.where((record) => record.id != id).toList();
   }
+  
+  // 教材と紐づく学習記録を削除
+  void removeByMaterialId(String materialId) {
+    state = state.where((record) => record.materialId != materialId).toList();
+  }
 }
