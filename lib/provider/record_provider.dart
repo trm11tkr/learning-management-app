@@ -17,14 +17,14 @@ class RecordList extends StateNotifier<List<Record>> {
   RecordList([List<Record>? initialRecords]) : super(initialRecords ?? []);
 
   // 追加
-  void add(String materialId, int learningTime, String description) {
+  void add({required String materialId, required int learningTime, String? description}) {
     state = [
       ...state,
       Record(
           id: DateTime.now().toString(),
           materialId: materialId,
           learningTime: learningTime,
-          description: description,
+          description: description ?? "",
           createdAt: DateTime.now())
     ];
   }
@@ -52,7 +52,7 @@ class RecordList extends StateNotifier<List<Record>> {
   void remove(String id) {
     state = state.where((record) => record.id != id).toList();
   }
-  
+
   // 教材と紐づく学習記録を削除
   void removeByMaterialId(String materialId) {
     state = state.where((record) => record.materialId != materialId).toList();
