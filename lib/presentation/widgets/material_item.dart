@@ -64,6 +64,7 @@ class MaterialItem extends HookConsumerWidget {
         ),
         title: Text(
           material.title,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
