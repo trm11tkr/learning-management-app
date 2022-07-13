@@ -9,6 +9,10 @@ import '../../model/entities/record.dart';
 import '../../provider/material_provider.dart';
 import '../pages/edit_material_page.dart';
 
+
+
+final _key = GlobalKey<FormState>();
+
 class EditRecordPage extends HookConsumerWidget {
   const EditRecordPage({Key? key, this.record}) : super(key: key);
 
@@ -20,7 +24,7 @@ class EditRecordPage extends HookConsumerWidget {
     final materialData = ref.watch(materialProvider);
     final timerController = useTextEditingController();
     final materialController = useTextEditingController();
-    final form = GlobalKey<FormState>();
+    final descriptionController = useTextEditingController();
 
     useEffect(() {
       if (record != null) {
@@ -29,6 +33,7 @@ class EditRecordPage extends HookConsumerWidget {
             .getById(record!.materialId)
             .title;
         timerController.text = record!.learningTime.toString();
+        descriptionController.text = record!.description.toString();
       }
     }, const []);
 
@@ -79,11 +84,11 @@ class EditRecordPage extends HookConsumerWidget {
     return Scaffold(
       appBar:
           AppBar(title: record == null ? const Text('登録') : const Text('編集')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Form(
-            key: form,
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Form(
+          key: _key,
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -93,9 +98,8 @@ class EditRecordPage extends HookConsumerWidget {
                   controller: materialController,
                   decoration: const InputDecoration(label: Text('学習教材')),
                   onTap: () {
-                    // キーボードが出ないようにする
+                    //     // キーボードが出ないようにする
                     FocusScope.of(context).requestFocus(FocusNode());
-
                     showPicker(
                       controller: materialController,
                       pickerItems: materialData
@@ -156,11 +160,21 @@ class EditRecordPage extends HookConsumerWidget {
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 40,
+                ),
+                TextFormField(
+                  controller: descriptionController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                      label: Text('メモ'), hintText: '過去問を3週した。'),
+                ),
                 TextButton(
                   onPressed: () {
-                    if (form.currentState?.validate() != true) {
+                    if (_key.currentState?.validate() != true) {
                       return;
                     }
+                    _key.currentState?.save();
                     if (record != null) {
                       ref.watch(recordProvider.notifier).edit(
                             recordId: record!.id,
@@ -170,6 +184,7 @@ class EditRecordPage extends HookConsumerWidget {
                             learningTime: int.parse(
                               timerController.text.replaceFirst("分", ""),
                             ),
+                            description: descriptionController.text,
                           );
                     } else {
                       ref.watch(recordProvider.notifier).add(
@@ -179,6 +194,7 @@ class EditRecordPage extends HookConsumerWidget {
                             learningTime: int.parse(
                               timerController.text.replaceFirst("分", ""),
                             ),
+                            description: descriptionController.text,
                           );
                     }
                     Navigator.of(context).pop();
