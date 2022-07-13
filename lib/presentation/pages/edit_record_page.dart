@@ -101,8 +101,10 @@ class EditRecordPage extends HookConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextFormField(
+                    textAlign: TextAlign.end,
                     controller: timerController,
-                    decoration: const InputDecoration(label: Text('学習時間')),
+                    decoration: const InputDecoration(
+                        label: Text('学習時間'), suffix: Text('分')),
                     onTap: () {
                       // キーボードが出ないようにする
                       FocusScope.of(context).requestFocus(FocusNode());
