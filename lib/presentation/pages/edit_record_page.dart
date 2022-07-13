@@ -16,6 +16,7 @@ class EditRecordPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mediaQuery = MediaQuery.of(context);
     final materialData = ref.watch(materialProvider);
     final timerController = useTextEditingController();
     final materialController = useTextEditingController();
@@ -53,7 +54,16 @@ class EditRecordPage extends HookConsumerWidget {
                 squeeze: 1.2,
                 useMagnifier: true,
                 itemExtent: 40,
-                children: pickerItems.map((item) => Text(item)).toList(),
+                children: pickerItems
+                    .map((item) => Container(
+                          width: mediaQuery.size.width * 0.7,
+                          child: Text(
+                            item,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
+                        ))
+                    .toList(),
                 onSelectedItemChanged: (int index) {
                   selectedIndex = index;
                 },
