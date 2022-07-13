@@ -10,7 +10,7 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       id: json['id'] as String,
       materialId: json['materialId'] as String,
       learningTime: json['learningTime'] as int,
-      description: json['description'] as String,
+      description: json['description'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
 

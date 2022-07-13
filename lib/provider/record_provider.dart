@@ -24,7 +24,7 @@ class RecordList extends StateNotifier<List<Record>> {
           id: DateTime.now().toString(),
           materialId: materialId,
           learningTime: learningTime,
-          description: description ?? "",
+          description: description,
           createdAt: DateTime.now())
     ];
   }

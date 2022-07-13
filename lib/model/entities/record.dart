@@ -11,7 +11,7 @@ class Record with _$Record {
     required String id,
     required String materialId,
     required int learningTime,
-    required String description,
+    required String? description,
     required DateTime createdAt,
   }) = _Record;
 
