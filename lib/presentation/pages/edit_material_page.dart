@@ -53,7 +53,8 @@ class EditMaterialPage extends HookConsumerWidget {
             child: TextFormField(
               controller: titleEditingController,
               decoration: const InputDecoration(
-                labelText: 'TOEIC 出る単特急 金のフレーズ',
+                labelText: 'タイトル',
+                hintText: 'TOEIC 出る単特急 金のフレーズ',
               ),
               validator: (value) => (value == null || value.trim().isEmpty)
                   ? 'タイトル正しく入力してください'

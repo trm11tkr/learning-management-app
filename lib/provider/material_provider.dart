@@ -32,6 +32,14 @@ class MaterialList extends StateNotifier<List<MaterialData>> {
   MaterialList([List<MaterialData>? initialMaterials])
       : super(initialMaterials ?? []);
 
+  MaterialData getById(String materialId) {
+    return state.firstWhere((material) => material.id == materialId);
+  }
+
+  String getByTitle(String materialTitle) {
+    return state.firstWhere((material) => material.title == materialTitle).id;
+  }
+
   // 追加
   void add(String title) {
     state = [

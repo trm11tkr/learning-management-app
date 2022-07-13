@@ -3,15 +3,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:learning_management_app/provider/record_provider.dart';
 
-import '../pages/edit_material_page.dart';
 import '../../provider/material_provider.dart';
-import '../../model/entities/material.dart';
-import './delete_dialog.dart';
+import '../../model/entities/record.dart';
+import '../pages/edit_record_page.dart';
 
-class MaterialItem extends HookConsumerWidget {
-  const MaterialItem({Key? key, required this.material}) : super(key: key);
+class RecordItem extends HookConsumerWidget {
+  const RecordItem({Key? key, required this.record, required this.materialName})
+      : super(key: key);
 
-  final MaterialData material;
+  final Record record;
+  final String materialName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +25,9 @@ class MaterialItem extends HookConsumerWidget {
           width: 50,
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.grey),
+            shape: BoxShape.circle,
           ),
+          child: Center(child: Text('${record.learningTime.toString()}m')),
         ),
         trailing: SizedBox(
           width: 100,
@@ -36,9 +39,7 @@ class MaterialItem extends HookConsumerWidget {
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return EditMaterialPage(
-                      material: material,
-                    );
+                    return EditRecordPage(record: record);
                   }));
                 },
               ),
@@ -48,25 +49,17 @@ class MaterialItem extends HookConsumerWidget {
                   color: Theme.of(context).errorColor,
                 ),
                 onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) {
-                      return DeleteDialog(
-                        title: material.title,
-                        materialId: material.id,
-                      );
-                    },
-                  );
+                  ref.watch(recordProvider.notifier).remove(record.id);
                 },
               ),
             ],
           ),
         ),
         title: Text(
-          material.title,
+          materialName,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        subtitle: Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
+        subtitle: Text(DateFormat('yyyy/MM/dd').format(record.createdAt),
             style: const TextStyle(color: Colors.grey)),
       ),
     );
