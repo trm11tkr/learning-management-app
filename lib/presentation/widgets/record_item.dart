@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:learning_management_app/provider/record_provider.dart';
 
 import '../../provider/material_provider.dart';
 import '../../model/entities/record.dart';
@@ -48,7 +49,7 @@ class RecordItem extends HookConsumerWidget {
                   color: Theme.of(context).errorColor,
                 ),
                 onPressed: () {
-                  ref.watch(materialProvider.notifier).remove(record.id);
+                  ref.watch(recordProvider.notifier).remove(record.id);
                 },
               ),
             ],
