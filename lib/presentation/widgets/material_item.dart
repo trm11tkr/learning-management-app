@@ -52,8 +52,17 @@ class MaterialItem extends HookConsumerWidget {
                     context: context,
                     builder: (_) {
                       return DeleteDialog(
-                        title: material.title,
-                        materialId: material.id,
+                        title: '「${material.title}」を削除してよろしいですか？',
+                        content: '${material.title}による学習記録は全て削除されます。',
+                        deleteHandle: () {
+                          ref
+                              .watch(materialProvider.notifier)
+                              .remove(material.id);
+                          ref
+                              .watch(recordProvider.notifier)
+                              .removeByMaterialId(material.id);
+                          Navigator.of(context).pop();
+                        },
                       );
                     },
                   );
