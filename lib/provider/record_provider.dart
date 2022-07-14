@@ -21,6 +21,17 @@ class RecordList extends StateNotifier<List<Record>> {
     return state.firstWhere((record) => record.id == id);
   }
 
+  // 1週間分のデータを取得
+  List<Record> get recentRecords {
+    return state.where((record) {
+      return record.createdAt.isAfter(
+        DateTime.now().subtract(
+          const Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
   // 追加
   void add(
       {required String materialId,
