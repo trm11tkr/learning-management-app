@@ -18,12 +18,24 @@ class HomePage extends ConsumerWidget {
     final List<Record> recentRecordList =
         ref.watch(recordProvider.notifier).recentRecords;
     final mediaQuery = MediaQuery.of(context);
+    const targetDayTime = 60;
     return Scaffold(
       body: Column(
         children: [
+          Container(
+            width: double.infinity,
+            child: const Card(
+              margin: EdgeInsets.only(top: 8, left: 5, right: 5),
+              elevation: 5,
+              child: Text(
+                '目標学習時間:$targetDayTime分/日',
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+          ),
           SizedBox(
             height: (mediaQuery.size.height - mediaQuery.padding.top) * 0.3,
-            child: Chart(recentRecord: recentRecordList),
+            child: Chart(recentRecord: recentRecordList, targetDayTime: targetDayTime),
           ),
           Expanded(
             child: ListView.builder(

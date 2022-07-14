@@ -5,10 +5,14 @@ import '../../model/entities/record.dart';
 import './chart_bar.dart';
 
 class Chart extends StatelessWidget {
-  const Chart({Key? key, required this.recentRecord}) : super(key: key);
+  const Chart(
+      {Key? key, required this.recentRecord, required this.targetDayTime})
+      : super(key: key);
 
   // 1週間分のトランザクション
   final List<Record> recentRecord;
+
+  final int targetDayTime;
 
   // 1週間分の学習時間を計算
   List<Map<String, dynamic>> get groupedRecordValues {
@@ -29,13 +33,6 @@ class Chart extends StatelessWidget {
     }).reversed.toList();
   }
 
-  // 出費の合計を計算
-  double get totalLearning {
-    return groupedRecordValues.fold(0, (sum, item) {
-      return sum + item['amount'];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -52,9 +49,9 @@ class Chart extends StatelessWidget {
                 child: ChartBar(
                     label: record['day'],
                     spendingAmount: record['amount'],
-                    spendingPctOfTotal: totalLearning == 0.0
-                        ? 0.0
-                        : record['amount'] / totalLearning),
+                    spendingPctOfTotal: record['amount'] / targetDayTime >= 1.0
+                        ? 1.0
+                        : record['amount'] / targetDayTime),
               );
             },
           ).toList(),
