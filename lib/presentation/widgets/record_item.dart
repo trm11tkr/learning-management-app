@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:learning_management_app/provider/record_provider.dart';
 
-import '../../provider/material_provider.dart';
+import '../../provider/record_provider.dart';
 import '../../model/entities/record.dart';
 import '../pages/edit_record_page.dart';
+import './delete_dialog.dart';
 
 class RecordItem extends HookConsumerWidget {
   const RecordItem({Key? key, required this.record, required this.materialName})
@@ -49,7 +49,19 @@ class RecordItem extends HookConsumerWidget {
                   color: Theme.of(context).errorColor,
                 ),
                 onPressed: () {
-                  ref.watch(recordProvider.notifier).remove(record.id);
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return DeleteDialog(
+                        title: '学習記録を削除してよろしいですか？',
+                        content: 'このアクションは取り消せません。',
+                        deleteHandle: () {
+                          ref.watch(recordProvider.notifier).remove(record.id);
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    },
+                  );
                 },
               ),
             ],
