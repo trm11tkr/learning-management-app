@@ -16,8 +16,16 @@ final recordProvider =
 class RecordList extends StateNotifier<List<Record>> {
   RecordList([List<Record>? initialRecords]) : super(initialRecords ?? []);
 
+  // idで検索
+  Record getById({required String id}) {
+    return state.firstWhere((record) => record.id == id);
+  }
+
   // 追加
-  void add({required String materialId, required int learningTime, String? description}) {
+  void add(
+      {required String materialId,
+      required int learningTime,
+      String? description}) {
     state = [
       ...state,
       Record(

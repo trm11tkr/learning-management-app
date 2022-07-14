@@ -9,14 +9,12 @@ import '../../model/entities/record.dart';
 import '../../provider/material_provider.dart';
 import '../pages/edit_material_page.dart';
 
-
-
 final _key = GlobalKey<FormState>();
 
 class EditRecordPage extends HookConsumerWidget {
-  const EditRecordPage({Key? key, this.record}) : super(key: key);
+  const EditRecordPage({Key? key, this.recordId}) : super(key: key);
 
-  final Record? record;
+  final String? recordId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,13 +25,15 @@ class EditRecordPage extends HookConsumerWidget {
     final descriptionController = useTextEditingController();
 
     useEffect(() {
-      if (record != null) {
+      if (recordId != null) {
+        final Record record =
+            ref.watch(recordProvider.notifier).getById(id: recordId!);
         materialController.text = ref
             .watch(materialProvider.notifier)
-            .getById(record!.materialId)
+            .getById(record.materialId)
             .title;
-        timerController.text = record!.learningTime.toString();
-        descriptionController.text = record!.description.toString();
+        timerController.text = record.learningTime.toString();
+        descriptionController.text = record.description.toString();
       }
     }, const []);
 
@@ -83,7 +83,7 @@ class EditRecordPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar:
-          AppBar(title: record == null ? const Text('登録') : const Text('編集')),
+          AppBar(title: recordId == null ? const Text('登録') : const Text('編集')),
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Form(
@@ -175,9 +175,9 @@ class EditRecordPage extends HookConsumerWidget {
                       return;
                     }
                     _key.currentState?.save();
-                    if (record != null) {
+                    if (recordId != null) {
                       ref.watch(recordProvider.notifier).edit(
-                            recordId: record!.id,
+                            recordId: recordId!,
                             materialId: ref
                                 .watch(materialProvider.notifier)
                                 .getByTitle(materialController.text),

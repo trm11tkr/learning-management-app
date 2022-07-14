@@ -22,9 +22,10 @@ class HomePage extends ConsumerWidget {
               .getById(recordList[index].materialId)
               .title;
           return RecordItem(
-            record: recordList[index],
-            materialName: materialName,
-          );
+              id: recordList[index].id,
+              learningTime: recordList[index].learningTime,
+              materialName: materialName,
+              createdAt: recordList[index].createdAt);
         },
         itemCount: recordList.length,
       ),
