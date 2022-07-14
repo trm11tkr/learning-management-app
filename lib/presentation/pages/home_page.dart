@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:learning_management_app/provider/material_provider.dart';
 
+import '../../provider/material_provider.dart';
 import '../widgets/record_item.dart';
 import '../../model/entities/record.dart';
 import '../../provider/record_provider.dart';
-import '../../provider/material_provider.dart';
 import '../pages/edit_record_page.dart';
 
 class HomePage extends ConsumerWidget {

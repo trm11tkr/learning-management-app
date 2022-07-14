@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:learning_management_app/provider/record_provider.dart';
 
+import '../../provider/record_provider.dart';
 import '../pages/edit_material_page.dart';
 import '../../provider/material_provider.dart';
 import '../../model/entities/material.dart';
