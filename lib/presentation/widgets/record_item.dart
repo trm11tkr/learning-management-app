@@ -27,7 +27,7 @@ class RecordItem extends HookConsumerWidget {
             border: Border.all(width: 1, color: Colors.grey),
             shape: BoxShape.circle,
           ),
-          child: Center(child: Text('${record.learningTime.toString()}m')),
+          child: Center(child: Text('${record.learningTime}分')),
         ),
         trailing: SizedBox(
           width: 100,
