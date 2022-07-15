@@ -26,60 +26,62 @@ class RecordItem extends HookConsumerWidget {
     return Card(
       elevation: 5.0,
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-        child: ListTile(
-          leading: Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.grey),
-              shape: BoxShape.circle,
-            ),
-            child: Center(child: Text('$learningTime分')),
+      child: ListTile(
+        leading: Container(
+          height: 50,
+          width: 50,
+          decoration: BoxDecoration(
+            border: Border.all(width: 1, color: Colors.grey),
+            shape: BoxShape.circle,
           ),
-          trailing: SizedBox(
-            width: 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return EditRecordPage(recordId: id);
-                    }));
-                  },
+          child: Center(child: Text('$learningTime分')),
+        ),
+        trailing: SizedBox(
+          width: 100,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return EditRecordPage(recordId: id);
+                  }));
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).errorColor,
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Theme.of(context).errorColor,
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return DeleteDialog(
-                          title: '学習記録を削除してよろしいですか？',
-                          content: 'このアクションは取り消せません。',
-                          deleteHandle: () {
-                            ref.watch(recordProvider.notifier).remove(id);
-                            Navigator.of(context).pop();
-                          },
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return DeleteDialog(
+                        title: '学習記録を削除してよろしいですか？',
+                        content: 'このアクションは取り消せません。',
+                        deleteHandle: () {
+                          ref.watch(recordProvider.notifier).remove(id);
+                          Navigator.of(context).pop();
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
           ),
-          title: Text(
-            materialName,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          subtitle: Text(DateFormat('yyyy/MM/dd').format(createdAt),
-              style: const TextStyle(color: Colors.grey)),
+        ),
+        title: Text(
+          materialName,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Text(
+          DateFormat('yyyy/MM/dd').format(createdAt),
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
       ),
     );
   }
