@@ -17,68 +17,95 @@ class MaterialItem extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      elevation: 5.0,
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-      child: ListTile(
-        leading: Container(
-          height: 50,
-          width: 50,
-          decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.grey),
-          ),
-        ),
-        trailing: SizedBox(
-          width: 100,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return EditMaterialPage(
-                      material: material,
-                    );
-                  }));
-                },
+      elevation: 3.0,
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      child: Container(
+        height: 140,
+        width: double.infinity,
+        padding: const EdgeInsets.all(4),
+        margin: const EdgeInsets.all(10),
+        child: Stack(alignment: Alignment.center, children: [
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: 0,
+            child: Container(
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(width: 1, color: Colors.grey),
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.delete,
-                  color: Theme.of(context).errorColor,
-                ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) {
-                      return DeleteDialog(
-                        title: '「${material.title}」を削除してよろしいですか？',
-                        content: '${material.title}による学習記録は全て削除されます。',
-                        deleteHandle: () {
-                          ref
-                              .watch(materialProvider.notifier)
-                              .remove(material.id);
-                          ref
-                              .watch(recordProvider.notifier)
-                              .removeByMaterialId(material.id);
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    },
+              child: material.imageUrl == null
+                  ? const Icon(
+                      Icons.image,
+                    )
+                  : const Icon(Icons.image),
+            ),
+          ),
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: 110,
+            right: 80,
+            child: SizedBox(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    material.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
+                      style: const TextStyle(color: Colors.grey))
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            right: 50,
+            child: IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return EditMaterialPage(
+                    material: material,
                   );
-                },
-              ),
-            ],
+                }));
+              },
+            ),
           ),
-        ),
-        title: Text(
-          material.title,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        subtitle: Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
-            style: const TextStyle(color: Colors.grey)),
+          Positioned(
+            right: 0,
+            child: IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: Theme.of(context).errorColor,
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return DeleteDialog(
+                      title: '「${material.title}」を削除してよろしいですか？',
+                      content: '${material.title}による学習記録は全て削除されます。',
+                      deleteHandle: () {
+                        ref
+                            .watch(materialProvider.notifier)
+                            .remove(material.id);
+                        ref
+                            .watch(recordProvider.notifier)
+                            .removeByMaterialId(material.id);
+                        Navigator.of(context).pop();
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ]),
       ),
     );
   }
