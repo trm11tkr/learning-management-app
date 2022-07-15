@@ -9,25 +9,31 @@ import '../../model/entities/record.dart';
 import '../../provider/material_provider.dart';
 import '../pages/edit_material_page.dart';
 
-class EditRecordPage extends HookConsumerWidget {
-  const EditRecordPage({Key? key, this.record}) : super(key: key);
+final _key = GlobalKey<FormState>();
 
-  final Record? record;
+class EditRecordPage extends HookConsumerWidget {
+  const EditRecordPage({Key? key, this.recordId}) : super(key: key);
+
+  final String? recordId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final mediaQuery = MediaQuery.of(context);
     final materialData = ref.watch(materialProvider);
     final timerController = useTextEditingController();
     final materialController = useTextEditingController();
-    final form = GlobalKey<FormState>();
+    final descriptionController = useTextEditingController();
 
     useEffect(() {
-      if (record != null) {
+      if (recordId != null) {
+        final Record record =
+            ref.watch(recordProvider.notifier).getById(id: recordId!);
         materialController.text = ref
             .watch(materialProvider.notifier)
-            .getById(record!.materialId)
+            .getById(record.materialId)
             .title;
-        timerController.text = record!.learningTime.toString();
+        timerController.text = record.learningTime.toString();
+        descriptionController.text = record.description.toString();
       }
     }, const []);
 
@@ -53,7 +59,16 @@ class EditRecordPage extends HookConsumerWidget {
                 squeeze: 1.2,
                 useMagnifier: true,
                 itemExtent: 40,
-                children: pickerItems.map((item) => Text(item)).toList(),
+                children: pickerItems
+                    .map((item) => Container(
+                          width: mediaQuery.size.width * 0.7,
+                          child: Text(
+                            item,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
+                        ))
+                    .toList(),
                 onSelectedItemChanged: (int index) {
                   selectedIndex = index;
                 },
@@ -68,12 +83,12 @@ class EditRecordPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar:
-          AppBar(title: record == null ? const Text('登録') : const Text('編集')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Form(
-            key: form,
+          AppBar(title: recordId == null ? const Text('登録') : const Text('編集')),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Form(
+          key: _key,
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -83,9 +98,8 @@ class EditRecordPage extends HookConsumerWidget {
                   controller: materialController,
                   decoration: const InputDecoration(label: Text('学習教材')),
                   onTap: () {
-                    // キーボードが出ないようにする
+                    //     // キーボードが出ないようにする
                     FocusScope.of(context).requestFocus(FocusNode());
-
                     showPicker(
                       controller: materialController,
                       pickerItems: materialData
@@ -146,20 +160,31 @@ class EditRecordPage extends HookConsumerWidget {
                     return null;
                   },
                 ),
+                const SizedBox(
+                  height: 40,
+                ),
+                TextFormField(
+                  controller: descriptionController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                      label: Text('メモ'), hintText: '過去問を3週した。'),
+                ),
                 TextButton(
                   onPressed: () {
-                    if (form.currentState?.validate() != true) {
+                    if (_key.currentState?.validate() != true) {
                       return;
                     }
-                    if (record != null) {
+                    _key.currentState?.save();
+                    if (recordId != null) {
                       ref.watch(recordProvider.notifier).edit(
-                            recordId: record!.id,
+                            recordId: recordId!,
                             materialId: ref
                                 .watch(materialProvider.notifier)
                                 .getByTitle(materialController.text),
                             learningTime: int.parse(
                               timerController.text.replaceFirst("分", ""),
                             ),
+                            description: descriptionController.text,
                           );
                     } else {
                       ref.watch(recordProvider.notifier).add(
@@ -169,6 +194,7 @@ class EditRecordPage extends HookConsumerWidget {
                             learningTime: int.parse(
                               timerController.text.replaceFirst("分", ""),
                             ),
+                            description: descriptionController.text,
                           );
                     }
                     Navigator.of(context).pop();

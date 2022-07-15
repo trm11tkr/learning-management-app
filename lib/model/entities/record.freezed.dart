@@ -23,7 +23,7 @@ mixin _$Record {
   String get id => throw _privateConstructorUsedError;
   String get materialId => throw _privateConstructorUsedError;
   int get learningTime => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $RecordCopyWith<$Res> {
       {String id,
       String materialId,
       int learningTime,
-      String description,
+      String? description,
       DateTime createdAt});
 }
 
@@ -75,7 +75,7 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -93,7 +93,7 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       {String id,
       String materialId,
       int learningTime,
-      String description,
+      String? description,
       DateTime createdAt});
 }
 
@@ -130,7 +130,7 @@ class __$$_RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -159,7 +159,7 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
   @override
   final int learningTime;
   @override
-  final String description;
+  final String? description;
   @override
   final DateTime createdAt;
 
@@ -221,7 +221,7 @@ abstract class _Record implements Record {
       {required final String id,
       required final String materialId,
       required final int learningTime,
-      required final String description,
+      required final String? description,
       required final DateTime createdAt}) = _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
@@ -233,7 +233,7 @@ abstract class _Record implements Record {
   @override
   int get learningTime;
   @override
-  String get description;
+  String? get description;
   @override
   DateTime get createdAt;
   @override

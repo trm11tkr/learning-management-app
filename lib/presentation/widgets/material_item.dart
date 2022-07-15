@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:learning_management_app/provider/record_provider.dart';
 
+import '../../provider/record_provider.dart';
 import '../pages/edit_material_page.dart';
 import '../../provider/material_provider.dart';
 import '../../model/entities/material.dart';
@@ -52,8 +53,17 @@ class MaterialItem extends HookConsumerWidget {
                     context: context,
                     builder: (_) {
                       return DeleteDialog(
-                        title: material.title,
-                        materialId: material.id,
+                        title: '「${material.title}」を削除してよろしいですか？',
+                        content: '${material.title}による学習記録は全て削除されます。',
+                        deleteHandle: () {
+                          ref
+                              .watch(materialProvider.notifier)
+                              .remove(material.id);
+                          ref
+                              .watch(recordProvider.notifier)
+                              .removeByMaterialId(material.id);
+                          Navigator.of(context).pop();
+                        },
                       );
                     },
                   );
@@ -64,6 +74,7 @@ class MaterialItem extends HookConsumerWidget {
         ),
         title: Text(
           material.title,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(DateFormat('yyyy/MM/dd').format(material.createdAt),

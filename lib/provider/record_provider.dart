@@ -11,20 +11,60 @@ final recordProvider =
             description: '15ページ進めた',
             createdAt: DateTime.now(),
           ),
+          Record(
+            id: 'r2',
+            materialId: '2',
+            learningTime: 30,
+            description: '15ページ進めた',
+            createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          ),
+          Record(
+            id: 'r3',
+            materialId: '3',
+            learningTime: 30,
+            description: '15ページ進めた',
+            createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          ),
+          Record(
+            id: 'r4',
+            materialId: '3',
+            learningTime: 30,
+            description: '15ページ進めた',
+            createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          ),
         ]));
 
 class RecordList extends StateNotifier<List<Record>> {
   RecordList([List<Record>? initialRecords]) : super(initialRecords ?? []);
 
+  // idで検索
+  Record getById({required String id}) {
+    return state.firstWhere((record) => record.id == id);
+  }
+
+  // 1週間分のデータを取得
+  List<Record> get recentRecords {
+    return state.where((record) {
+      return record.createdAt.isAfter(
+        DateTime.now().subtract(
+          const Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
+
   // 追加
-  void add({required String materialId, required int learningTime, String? description}) {
+  void add(
+      {required String materialId,
+      required int learningTime,
+      String? description}) {
     state = [
       ...state,
       Record(
           id: DateTime.now().toString(),
           materialId: materialId,
           learningTime: learningTime,
-          description: description ?? "",
+          description: description,
           createdAt: DateTime.now())
     ];
   }
