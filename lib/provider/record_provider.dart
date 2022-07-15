@@ -11,6 +11,27 @@ final recordProvider =
             description: '15ページ進めた',
             createdAt: DateTime.now(),
           ),
+          Record(
+            id: 'r2',
+            materialId: '2',
+            learningTime: 30,
+            description: '15ページ進めた',
+            createdAt: DateTime.now().subtract(const Duration(days: 1)),
+          ),
+          Record(
+            id: 'r3',
+            materialId: '3',
+            learningTime: 30,
+            description: '15ページ進めた',
+            createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          ),
+          Record(
+            id: 'r4',
+            materialId: '3',
+            learningTime: 30,
+            description: '15ページ進めた',
+            createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          ),
         ]));
 
 class RecordList extends StateNotifier<List<Record>> {
