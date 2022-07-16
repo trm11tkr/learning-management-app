@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,9 +9,9 @@ import '../../provider/material_provider.dart';
 import '../../model/entities/material.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
-  const EditMaterialPage({Key? key, this.material}) : super(key: key);
+  const EditMaterialPage({Key? key, this.materialId}) : super(key: key);
 
-  final MaterialData? material;
+  final String? materialId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,9 +20,14 @@ class EditMaterialPage extends HookConsumerWidget {
     final form = GlobalKey<FormState>();
 
     useEffect(() {
-      if (material != null) {
-        titleEditingController.text = material?.title ?? '';
-        imageEditingController.text = material?.title ?? '';
+      if (materialId != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          MaterialData material =
+              ref.watch(materialProvider.notifier).getById(materialId!);
+          titleEditingController.text = material.title;
+          imageEditingController.text = material.title;
+        });
+        return;
       }
     }, const []);
 
@@ -67,9 +74,9 @@ class EditMaterialPage extends HookConsumerWidget {
               if (form.currentState?.validate() != true) {
                 return;
               }
-              if (material != null) {
+              if (materialId != null) {
                 ref.watch(materialProvider.notifier).edit(
-                    materialId: material!.id,
+                    materialId: materialId!,
                     title: titleEditingController.text);
               } else {
                 ref
