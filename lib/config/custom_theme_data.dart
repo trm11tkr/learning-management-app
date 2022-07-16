@@ -11,6 +11,9 @@ final customLightThemeData = ThemeData.light().copyWith(
         fontSize: 24,
       ),
     ),
+    iconTheme: const IconThemeData(
+      color: Color(0xFF444444),
+    ),
     textTheme: const TextTheme(
       bodyMedium: TextStyle(
         color: Color(0xFF444444),
@@ -44,6 +47,9 @@ final customDarkThemeData = ThemeData.dark().copyWith(
     titleTextStyle: TextStyle(
       fontSize: 24,
     ),
+  ),
+  iconTheme: const IconThemeData(
+    color: Color(0xFFE6E6E6),
   ),
   textTheme: const TextTheme(
     bodyMedium: TextStyle(

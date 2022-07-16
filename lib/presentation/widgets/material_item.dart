@@ -32,12 +32,14 @@ class MaterialItem extends HookConsumerWidget {
             child: Container(
               width: 100,
               decoration: BoxDecoration(
+                color: Colors.grey.shade400,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(width: 1, color: Colors.grey),
               ),
               child: material.imageUrl == null
                   ? const Icon(
                       Icons.image,
+                      
                     )
                   : const Icon(Icons.image),
             ),
