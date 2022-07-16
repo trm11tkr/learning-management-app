@@ -32,7 +32,7 @@ class EditRecordPage extends HookConsumerWidget {
             .watch(materialProvider.notifier)
             .getById(record.materialId)
             .title;
-        timerController.text = record.learningTime.toString();
+        timerController.text = '${record.learningTime}分';
         descriptionController.text = record.description.toString();
       }
     }, const []);
@@ -174,13 +174,15 @@ class EditRecordPage extends HookConsumerWidget {
                     if (_key.currentState?.validate() != true) {
                       return;
                     }
+
                     _key.currentState?.save();
+                    final materialId = ref
+                        .watch(materialProvider.notifier)
+                        .getByTitle(materialController.text);
                     if (recordId != null) {
                       ref.watch(recordProvider.notifier).edit(
                             recordId: recordId!,
-                            materialId: ref
-                                .watch(materialProvider.notifier)
-                                .getByTitle(materialController.text),
+                            materialId: materialId,
                             learningTime: int.parse(
                               timerController.text.replaceFirst("分", ""),
                             ),
@@ -188,9 +190,7 @@ class EditRecordPage extends HookConsumerWidget {
                           );
                     } else {
                       ref.watch(recordProvider.notifier).add(
-                            materialId: ref
-                                .watch(materialProvider.notifier)
-                                .getByTitle(materialController.text),
+                            materialId: materialId,
                             learningTime: int.parse(
                               timerController.text.replaceFirst("分", ""),
                             ),
