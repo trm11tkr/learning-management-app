@@ -10,22 +10,15 @@ import './materials_page.dart';
 class TabsPage extends ConsumerWidget {
   const TabsPage({Key? key}) : super(key: key);
 
-  final List<Map<String, dynamic>> _pages = const [
-    {'page': MaterialsPage(), 'title': '教材ページ'},
-    {'page': HomePage(), 'title': 'ホーム'},
-    {'page': MyPage(), 'title': 'マイページ'}
-  ];
+  final List<Widget> _pages = const [MaterialsPage(), HomePage(), MyPage()];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final TabType tabType = ref.watch(tabTypeProvider);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_pages[tabType.index]['title']),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
@@ -46,7 +39,7 @@ class TabsPage extends ConsumerWidget {
         },
         currentIndex: tabType.index,
       ),
-      body: _pages[tabType.index]['page'],
+      body: SafeArea(child: _pages[tabType.index]),
     );
   }
 }
