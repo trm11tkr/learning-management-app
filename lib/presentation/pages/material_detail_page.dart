@@ -90,6 +90,7 @@ class MaterialDetailPage extends HookConsumerWidget {
                                 .watch(recordProvider.notifier)
                                 .removeByMaterialId(id);
                             Navigator.of(context).pop();
+                            Navigator.of(context).pop();
                           },
                         );
                       },
