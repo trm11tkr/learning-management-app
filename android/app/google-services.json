@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "561947646287",
+    "project_id": "learning-management-app-40c1b",
+    "storage_bucket": "learning-management-app-40c1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561947646287:android:e1e956ae90e8f9232a0d3a",
+        "android_client_info": {
+          "package_name": "com.example.learning_management_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561947646287-fmqjslvq47en85ssoj1oqfo0fp40i0t1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJhICBkzcqbuC2USBK-xJ9BuXK6l2jIYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561947646287-fmqjslvq47en85ssoj1oqfo0fp40i0t1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
