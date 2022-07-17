@@ -29,46 +29,34 @@ class MaterialItem extends StatelessWidget {
           width: double.infinity,
           padding: const EdgeInsets.all(4),
           margin: const EdgeInsets.all(10),
-          child: Stack(
-            alignment: Alignment.center,
+          child: Row(
             children: [
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                child: Container(
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade400,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(width: 1, color: Colors.grey),
-                  ),
-                  child: material.imageUrl == null
-                      ? const Icon(
-                          Icons.image,
-                        )
-                      : const Icon(Icons.image),
+              Container(
+                height: double.infinity,
+                width: 100,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade400,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(width: 1, color: Colors.grey),
                 ),
+                child: material.imageUrl == null
+                    ? const Icon(
+                        Icons.image,
+                      )
+                    : const Icon(Icons.image),
               ),
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: 110,
-                right: 80,
-                child: SizedBox(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        material.title,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
-                          style: const TextStyle(color: Colors.grey))
-                    ],
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    material.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                ),
+                  Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
+                      style: const TextStyle(color: Colors.grey))
+                ],
               ),
             ],
           ),
