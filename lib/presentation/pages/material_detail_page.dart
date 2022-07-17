@@ -58,7 +58,7 @@ class MaterialDetailPage extends HookConsumerWidget {
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(width: 1, color: Colors.grey),
                         ),
-                        child: material.imageUrl == null
+                        child: material.image == null
                             ? const Icon(Icons.image)
                             : const Icon(Icons.image),
                       ),

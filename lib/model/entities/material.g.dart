@@ -12,7 +12,9 @@ _$_MaterialData _$$_MaterialDataFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       createdAt: const DateTimeTimestampConverter()
           .fromJson(json['createdAt'] as Timestamp),
-      imageUrl: json['imageUrl'] as String?,
+      image: json['image'] == null
+          ? null
+          : StorageFile.fromJson(json['image'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_MaterialDataToJson(_$_MaterialData instance) =>
@@ -21,5 +23,5 @@ Map<String, dynamic> _$$_MaterialDataToJson(_$_MaterialData instance) =>
       'title': instance.title,
       'createdAt':
           const DateTimeTimestampConverter().toJson(instance.createdAt),
-      'imageUrl': instance.imageUrl,
+      'image': instance.image,
     };

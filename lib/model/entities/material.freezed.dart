@@ -24,7 +24,7 @@ mixin _$MaterialData {
   String get title => throw _privateConstructorUsedError;
   @DateTimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
-  String? get imageUrl => throw _privateConstructorUsedError;
+  StorageFile? get image => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,7 +41,9 @@ abstract class $MaterialDataCopyWith<$Res> {
       {String id,
       String title,
       @DateTimeTimestampConverter() DateTime createdAt,
-      String? imageUrl});
+      StorageFile? image});
+
+  $StorageFileCopyWith<$Res>? get image;
 }
 
 /// @nodoc
@@ -57,7 +59,7 @@ class _$MaterialDataCopyWithImpl<$Res> implements $MaterialDataCopyWith<$Res> {
     Object? id = freezed,
     Object? title = freezed,
     Object? createdAt = freezed,
-    Object? imageUrl = freezed,
+    Object? image = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -72,11 +74,22 @@ class _$MaterialDataCopyWithImpl<$Res> implements $MaterialDataCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      imageUrl: imageUrl == freezed
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as StorageFile?,
     ));
+  }
+
+  @override
+  $StorageFileCopyWith<$Res>? get image {
+    if (_value.image == null) {
+      return null;
+    }
+
+    return $StorageFileCopyWith<$Res>(_value.image!, (value) {
+      return _then(_value.copyWith(image: value));
+    });
   }
 }
 
@@ -91,7 +104,10 @@ abstract class _$$_MaterialDataCopyWith<$Res>
       {String id,
       String title,
       @DateTimeTimestampConverter() DateTime createdAt,
-      String? imageUrl});
+      StorageFile? image});
+
+  @override
+  $StorageFileCopyWith<$Res>? get image;
 }
 
 /// @nodoc
@@ -110,7 +126,7 @@ class __$$_MaterialDataCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = freezed,
     Object? createdAt = freezed,
-    Object? imageUrl = freezed,
+    Object? image = freezed,
   }) {
     return _then(_$_MaterialData(
       id: id == freezed
@@ -125,22 +141,23 @@ class __$$_MaterialDataCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      imageUrl: imageUrl == freezed
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
+      image: image == freezed
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as StorageFile?,
     ));
   }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
+class _$_MaterialData extends _MaterialData with DiagnosticableTreeMixin {
   const _$_MaterialData(
       {required this.id,
       required this.title,
       @DateTimeTimestampConverter() required this.createdAt,
-      this.imageUrl});
+      this.image})
+      : super._();
 
   factory _$_MaterialData.fromJson(Map<String, dynamic> json) =>
       _$$_MaterialDataFromJson(json);
@@ -153,11 +170,11 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
   @DateTimeTimestampConverter()
   final DateTime createdAt;
   @override
-  final String? imageUrl;
+  final StorageFile? image;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MaterialData(id: $id, title: $title, createdAt: $createdAt, imageUrl: $imageUrl)';
+    return 'MaterialData(id: $id, title: $title, createdAt: $createdAt, image: $image)';
   }
 
   @override
@@ -168,7 +185,7 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('imageUrl', imageUrl));
+      ..add(DiagnosticsProperty('image', image));
   }
 
   @override
@@ -179,7 +196,7 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.imageUrl, imageUrl));
+            const DeepCollectionEquality().equals(other.image, image));
   }
 
   @JsonKey(ignore: true)
@@ -189,7 +206,7 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(imageUrl));
+      const DeepCollectionEquality().hash(image));
 
   @JsonKey(ignore: true)
   @override
@@ -204,12 +221,13 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
   }
 }
 
-abstract class _MaterialData implements MaterialData {
+abstract class _MaterialData extends MaterialData {
   const factory _MaterialData(
       {required final String id,
       required final String title,
       @DateTimeTimestampConverter() required final DateTime createdAt,
-      final String? imageUrl}) = _$_MaterialData;
+      final StorageFile? image}) = _$_MaterialData;
+  const _MaterialData._() : super._();
 
   factory _MaterialData.fromJson(Map<String, dynamic> json) =
       _$_MaterialData.fromJson;
@@ -222,7 +240,7 @@ abstract class _MaterialData implements MaterialData {
   @DateTimeTimestampConverter()
   DateTime get createdAt;
   @override
-  String? get imageUrl;
+  StorageFile? get image;
   @override
   @JsonKey(ignore: true)
   _$$_MaterialDataCopyWith<_$_MaterialData> get copyWith =>

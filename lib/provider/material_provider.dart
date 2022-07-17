@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../model/entities/material.dart';
+import '../model/entities/storage_file.dart';
 
 final materialProvider =
     StateNotifierProvider<MaterialList, List<MaterialData>>(
@@ -52,13 +53,13 @@ class MaterialList extends StateNotifier<List<MaterialData>> {
   }
 
   // 編集
-  void edit({required String materialId, String? title, String? imageUrl}) {
+  void edit({required String materialId, String? title, StorageFile? image}) {
     state = [
       for (final material in state)
         if (material.id == materialId)
           material.copyWith(
             title: title ?? material.title,
-            imageUrl: imageUrl,
+            image: image,
           )
         else
           material,
