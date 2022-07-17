@@ -84,124 +84,128 @@ class EditRecordPage extends HookConsumerWidget {
     return Scaffold(
       appBar:
           AppBar(title: recordId == null ? const Text('登録') : const Text('編集')),
-      body: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Form(
-          key: _key,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextFormField(
-                  textAlign: TextAlign.end,
-                  controller: materialController,
-                  decoration: const InputDecoration(label: Text('学習教材')),
-                  onTap: () {
-                    //     // キーボードが出ないようにする
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    showPicker(
-                      controller: materialController,
-                      pickerItems: materialData
-                          .map((material) => material.title)
-                          .toList(),
-                      settingValues:
-                          materialData.map((material) => material.id).toList(),
-                    );
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '学習教材を選択してください。';
-                    }
-                    return null;
-                  },
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) {
-                      return const EditMaterialPage();
-                    }));
-                  },
-                  child: const Text('教材の追加'),
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                TextFormField(
-                  textAlign: TextAlign.end,
-                  controller: timerController,
-                  decoration: const InputDecoration(label: Text('学習時間')),
-                  onTap: () {
-                    // キーボードが出ないようにする
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    final settingValues = [
-                      '30',
-                      '60',
-                      '90',
-                      '120',
-                      '150',
-                      '180',
-                      '210',
-                      '240',
-                      '300'
-                    ];
-                    showPicker(
-                      controller: timerController,
-                      pickerItems:
-                          settingValues.map((value) => '$value分').toList(),
-                      settingValues: settingValues,
-                    );
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '学習時間を選択してください。';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                TextFormField(
-                  controller: descriptionController,
-                  maxLines: 3,
-                  decoration: const InputDecoration(
-                      label: Text('メモ'), hintText: '過去問を3週した。'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    if (_key.currentState?.validate() != true) {
-                      return;
-                    }
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Form(
+            key: _key,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextFormField(
+                    textAlign: TextAlign.end,
+                    controller: materialController,
+                    decoration: const InputDecoration(label: Text('学習教材')),
+                    onTap: () {
+                      //     // キーボードが出ないようにする
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      showPicker(
+                        controller: materialController,
+                        pickerItems: materialData
+                            .map((material) => material.title)
+                            .toList(),
+                        settingValues: materialData
+                            .map((material) => material.id)
+                            .toList(),
+                      );
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '学習教材を選択してください。';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return const EditMaterialPage();
+                      }));
+                    },
+                    child: const Text('教材の追加'),
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  TextFormField(
+                    textAlign: TextAlign.end,
+                    controller: timerController,
+                    decoration: const InputDecoration(label: Text('学習時間')),
+                    onTap: () {
+                      // キーボードが出ないようにする
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      final settingValues = [
+                        '30',
+                        '60',
+                        '90',
+                        '120',
+                        '150',
+                        '180',
+                        '210',
+                        '240',
+                        '300'
+                      ];
+                      showPicker(
+                        controller: timerController,
+                        pickerItems:
+                            settingValues.map((value) => '$value分').toList(),
+                        settingValues: settingValues,
+                      );
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '学習時間を選択してください。';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  TextFormField(
+                    controller: descriptionController,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                        label: Text('メモ'), hintText: '過去問を3週した。'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      if (_key.currentState?.validate() != true) {
+                        return;
+                      }
 
-                    _key.currentState?.save();
-                    final materialId = ref
-                        .watch(materialProvider.notifier)
-                        .getByTitle(materialController.text);
-                    if (recordId != null) {
-                      ref.watch(recordProvider.notifier).edit(
-                            recordId: recordId!,
-                            materialId: materialId,
-                            learningTime: int.parse(
-                              timerController.text.replaceFirst("分", ""),
-                            ),
-                            description: descriptionController.text,
-                          );
-                    } else {
-                      ref.watch(recordProvider.notifier).add(
-                            materialId: materialId,
-                            learningTime: int.parse(
-                              timerController.text.replaceFirst("分", ""),
-                            ),
-                            description: descriptionController.text,
-                          );
-                    }
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('登録'),
-                ),
-              ],
+                      _key.currentState?.save();
+                      final materialId = ref
+                          .watch(materialProvider.notifier)
+                          .getByTitle(materialController.text);
+                      if (recordId != null) {
+                        ref.watch(recordProvider.notifier).edit(
+                              recordId: recordId!,
+                              materialId: materialId,
+                              learningTime: int.parse(
+                                timerController.text.replaceFirst("分", ""),
+                              ),
+                              description: descriptionController.text,
+                            );
+                      } else {
+                        ref.watch(recordProvider.notifier).add(
+                              materialId: materialId,
+                              learningTime: int.parse(
+                                timerController.text.replaceFirst("分", ""),
+                              ),
+                              description: descriptionController.text,
+                            );
+                      }
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('登録'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
