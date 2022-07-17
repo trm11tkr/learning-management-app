@@ -212,7 +212,9 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RecordToJson(this);
+    return _$$_RecordToJson(
+      this,
+    );
   }
 }
 

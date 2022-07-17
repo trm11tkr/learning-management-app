@@ -6,25 +6,25 @@ final materialProvider =
     StateNotifierProvider<MaterialList, List<MaterialData>>(
         (_) => MaterialList([
               MaterialData(
-                  id: '1',
-                  title: 'test1',
-                  createdAt: DateTime.now(),
-                  category: CategoryData.japanese),
+                id: '1',
+                title: 'test1',
+                createdAt: DateTime.now(),
+              ),
               MaterialData(
-                  id: '2',
-                  title: 'test2',
-                  createdAt: DateTime.now(),
-                  category: CategoryData.mathematics),
+                id: '2',
+                title: 'test2',
+                createdAt: DateTime.now(),
+              ),
               MaterialData(
-                  id: '3',
-                  title: 'test3',
-                  createdAt: DateTime.now(),
-                  category: CategoryData.science),
+                id: '3',
+                title: 'test3',
+                createdAt: DateTime.now(),
+              ),
               MaterialData(
-                  id: '4',
-                  title: 'test4',
-                  createdAt: DateTime.now(),
-                  category: CategoryData.english),
+                id: '4',
+                title: 'test4',
+                createdAt: DateTime.now(),
+              ),
             ]));
 
 class MaterialList extends StateNotifier<List<MaterialData>> {

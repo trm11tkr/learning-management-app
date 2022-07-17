@@ -23,7 +23,6 @@ mixin _$MaterialData {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  CategoryData? get category => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,12 +36,7 @@ abstract class $MaterialDataCopyWith<$Res> {
   factory $MaterialDataCopyWith(
           MaterialData value, $Res Function(MaterialData) then) =
       _$MaterialDataCopyWithImpl<$Res>;
-  $Res call(
-      {String id,
-      String title,
-      DateTime createdAt,
-      CategoryData? category,
-      String? imageUrl});
+  $Res call({String id, String title, DateTime createdAt, String? imageUrl});
 }
 
 /// @nodoc
@@ -58,7 +52,6 @@ class _$MaterialDataCopyWithImpl<$Res> implements $MaterialDataCopyWith<$Res> {
     Object? id = freezed,
     Object? title = freezed,
     Object? createdAt = freezed,
-    Object? category = freezed,
     Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
@@ -74,10 +67,6 @@ class _$MaterialDataCopyWithImpl<$Res> implements $MaterialDataCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      category: category == freezed
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as CategoryData?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -93,12 +82,7 @@ abstract class _$$_MaterialDataCopyWith<$Res>
           _$_MaterialData value, $Res Function(_$_MaterialData) then) =
       __$$_MaterialDataCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {String id,
-      String title,
-      DateTime createdAt,
-      CategoryData? category,
-      String? imageUrl});
+  $Res call({String id, String title, DateTime createdAt, String? imageUrl});
 }
 
 /// @nodoc
@@ -117,7 +101,6 @@ class __$$_MaterialDataCopyWithImpl<$Res>
     Object? id = freezed,
     Object? title = freezed,
     Object? createdAt = freezed,
-    Object? category = freezed,
     Object? imageUrl = freezed,
   }) {
     return _then(_$_MaterialData(
@@ -133,10 +116,6 @@ class __$$_MaterialDataCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      category: category == freezed
-          ? _value.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as CategoryData?,
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
@@ -152,7 +131,6 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
       {required this.id,
       required this.title,
       required this.createdAt,
-      this.category,
       this.imageUrl});
 
   factory _$_MaterialData.fromJson(Map<String, dynamic> json) =>
@@ -165,13 +143,11 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
   @override
   final DateTime createdAt;
   @override
-  final CategoryData? category;
-  @override
   final String? imageUrl;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MaterialData(id: $id, title: $title, createdAt: $createdAt, category: $category, imageUrl: $imageUrl)';
+    return 'MaterialData(id: $id, title: $title, createdAt: $createdAt, imageUrl: $imageUrl)';
   }
 
   @override
@@ -182,7 +158,6 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('title', title))
       ..add(DiagnosticsProperty('createdAt', createdAt))
-      ..add(DiagnosticsProperty('category', category))
       ..add(DiagnosticsProperty('imageUrl', imageUrl));
   }
 
@@ -194,7 +169,6 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
-            const DeepCollectionEquality().equals(other.category, category) &&
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl));
   }
 
@@ -205,7 +179,6 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(imageUrl));
 
   @JsonKey(ignore: true)
@@ -215,7 +188,9 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MaterialDataToJson(this);
+    return _$$_MaterialDataToJson(
+      this,
+    );
   }
 }
 
@@ -224,7 +199,6 @@ abstract class _MaterialData implements MaterialData {
       {required final String id,
       required final String title,
       required final DateTime createdAt,
-      final CategoryData? category,
       final String? imageUrl}) = _$_MaterialData;
 
   factory _MaterialData.fromJson(Map<String, dynamic> json) =
@@ -236,8 +210,6 @@ abstract class _MaterialData implements MaterialData {
   String get title;
   @override
   DateTime get createdAt;
-  @override
-  CategoryData? get category;
   @override
   String? get imageUrl;
   @override
