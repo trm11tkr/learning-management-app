@@ -24,6 +24,7 @@ mixin _$Record {
   String get materialId => throw _privateConstructorUsedError;
   int get learningTime => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  @DateTimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +41,7 @@ abstract class $RecordCopyWith<$Res> {
       String materialId,
       int learningTime,
       String? description,
-      DateTime createdAt});
+      @DateTimeTimestampConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -94,7 +95,7 @@ abstract class _$$_RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       String materialId,
       int learningTime,
       String? description,
-      DateTime createdAt});
+      @DateTimeTimestampConverter() DateTime createdAt});
 }
 
 /// @nodoc
@@ -147,7 +148,7 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
       required this.materialId,
       required this.learningTime,
       required this.description,
-      required this.createdAt});
+      @DateTimeTimestampConverter() required this.createdAt});
 
   factory _$_Record.fromJson(Map<String, dynamic> json) =>
       _$$_RecordFromJson(json);
@@ -161,6 +162,7 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
   @override
   final String? description;
   @override
+  @DateTimeTimestampConverter()
   final DateTime createdAt;
 
   @override
@@ -220,11 +222,12 @@ class _$_Record with DiagnosticableTreeMixin implements _Record {
 
 abstract class _Record implements Record {
   const factory _Record(
-      {required final String id,
-      required final String materialId,
-      required final int learningTime,
-      required final String? description,
-      required final DateTime createdAt}) = _$_Record;
+          {required final String id,
+          required final String materialId,
+          required final int learningTime,
+          required final String? description,
+          @DateTimeTimestampConverter() required final DateTime createdAt}) =
+      _$_Record;
 
   factory _Record.fromJson(Map<String, dynamic> json) = _$_Record.fromJson;
 
@@ -237,6 +240,7 @@ abstract class _Record implements Record {
   @override
   String? get description;
   @override
+  @DateTimeTimestampConverter()
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)

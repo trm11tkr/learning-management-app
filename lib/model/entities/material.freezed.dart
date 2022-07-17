@@ -22,6 +22,7 @@ MaterialData _$MaterialDataFromJson(Map<String, dynamic> json) {
 mixin _$MaterialData {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  @DateTimeTimestampConverter()
   DateTime get createdAt => throw _privateConstructorUsedError;
   String? get imageUrl => throw _privateConstructorUsedError;
 
@@ -36,7 +37,11 @@ abstract class $MaterialDataCopyWith<$Res> {
   factory $MaterialDataCopyWith(
           MaterialData value, $Res Function(MaterialData) then) =
       _$MaterialDataCopyWithImpl<$Res>;
-  $Res call({String id, String title, DateTime createdAt, String? imageUrl});
+  $Res call(
+      {String id,
+      String title,
+      @DateTimeTimestampConverter() DateTime createdAt,
+      String? imageUrl});
 }
 
 /// @nodoc
@@ -82,7 +87,11 @@ abstract class _$$_MaterialDataCopyWith<$Res>
           _$_MaterialData value, $Res Function(_$_MaterialData) then) =
       __$$_MaterialDataCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String title, DateTime createdAt, String? imageUrl});
+  $Res call(
+      {String id,
+      String title,
+      @DateTimeTimestampConverter() DateTime createdAt,
+      String? imageUrl});
 }
 
 /// @nodoc
@@ -130,7 +139,7 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
   const _$_MaterialData(
       {required this.id,
       required this.title,
-      required this.createdAt,
+      @DateTimeTimestampConverter() required this.createdAt,
       this.imageUrl});
 
   factory _$_MaterialData.fromJson(Map<String, dynamic> json) =>
@@ -141,6 +150,7 @@ class _$_MaterialData with DiagnosticableTreeMixin implements _MaterialData {
   @override
   final String title;
   @override
+  @DateTimeTimestampConverter()
   final DateTime createdAt;
   @override
   final String? imageUrl;
@@ -198,7 +208,7 @@ abstract class _MaterialData implements MaterialData {
   const factory _MaterialData(
       {required final String id,
       required final String title,
-      required final DateTime createdAt,
+      @DateTimeTimestampConverter() required final DateTime createdAt,
       final String? imageUrl}) = _$_MaterialData;
 
   factory _MaterialData.fromJson(Map<String, dynamic> json) =
@@ -209,6 +219,7 @@ abstract class _MaterialData implements MaterialData {
   @override
   String get title;
   @override
+  @DateTimeTimestampConverter()
   DateTime get createdAt;
   @override
   String? get imageUrl;

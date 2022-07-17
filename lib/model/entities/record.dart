@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../converters/date_time_timestamp_converter.dart';
 
 part 'record.freezed.dart';
 part 'record.g.dart';
@@ -12,9 +14,8 @@ class Record with _$Record {
     required String materialId,
     required int learningTime,
     required String? description,
-    required DateTime createdAt,
+    @DateTimeTimestampConverter() required DateTime createdAt,
   }) = _Record;
 
-  factory Record.fromJson(Map<String, dynamic> json) =>
-      _$RecordFromJson(json);
+  factory Record.fromJson(Map<String, dynamic> json) => _$RecordFromJson(json);
 }
