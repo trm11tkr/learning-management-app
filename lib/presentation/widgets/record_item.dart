@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../pages/record_detail_page.dart';
 
-class RecordItem extends HookConsumerWidget {
+class RecordItem extends StatelessWidget {
   const RecordItem({
     Key? key,
     required this.id,
@@ -20,7 +20,7 @@ class RecordItem extends HookConsumerWidget {
   final DateTime createdAt;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {

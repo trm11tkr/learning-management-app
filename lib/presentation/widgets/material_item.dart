@@ -6,13 +6,13 @@ import 'package:intl/intl.dart';
 import '../../model/entities/material.dart';
 import '../pages/material_detail_page.dart';
 
-class MaterialItem extends HookConsumerWidget {
+class MaterialItem extends StatelessWidget {
   const MaterialItem({Key? key, required this.material}) : super(key: key);
 
   final MaterialData material;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
