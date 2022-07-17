@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../model/entities/record.dart';
 
 final recordProvider =
-    StateNotifierProvider<RecordList, List<Record>>((_) => RecordList([
+    StateNotifierProvider<RecordList, List<Record>>((ref) => RecordList([
           Record(
             id: 'r1',
             materialId: '1',
@@ -38,8 +38,11 @@ class RecordList extends StateNotifier<List<Record>> {
   RecordList([List<Record>? initialRecords]) : super(initialRecords ?? []);
 
   // idで検索
-  Record getById({required String id}) {
-    return state.firstWhere((record) => record.id == id);
+  dynamic getById({required String id}) {
+    if (state.map((record) => record.id).toList().contains(id)) {
+      return state.firstWhere((record) => record.id == id);
+    }
+    return null;
   }
 
   // 1週間分のデータを取得

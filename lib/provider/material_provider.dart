@@ -52,13 +52,12 @@ class MaterialList extends StateNotifier<List<MaterialData>> {
   }
 
   // 編集
-  void edit(
-      {required String materialId, required String title, String? imageUrl}) {
+  void edit({required String materialId, String? title, String? imageUrl}) {
     state = [
       for (final material in state)
         if (material.id == materialId)
           material.copyWith(
-            title: title,
+            title: title ?? material.title,
             imageUrl: imageUrl,
           )
         else
