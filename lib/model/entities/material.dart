@@ -6,7 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import '../converters/date_time_timestamp_converter.dart';
 import '.././converters/date_time_timestamp_converter.dart';
 import '../../extensions/date_extension.dart';
-import '../repositories/firestore/docment.dart';
+import '../repositories/firestore/document.dart';
 import 'storage_file.dart';
 
 part 'material.freezed.dart';

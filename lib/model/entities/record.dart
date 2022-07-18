@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../converters/date_time_timestamp_converter.dart';
-import '../repositories/firestore/docment.dart';
+import '../repositories/firestore/document.dart';
 import '../../extensions/date_extension.dart';
 
 part 'record.freezed.dart';
