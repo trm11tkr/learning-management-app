@@ -17,7 +17,7 @@ class MaterialItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return MaterialDetailPage(
-            id: material.id,
+            data: material,
           );
         }));
       },

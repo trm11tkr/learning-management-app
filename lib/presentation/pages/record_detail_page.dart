@@ -5,26 +5,31 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:learning_management_app/model/entities/record.dart';
+import 'package:learning_management_app/model/use_cases/material_controller.dart';
 
+import '../../model/entities/record.dart';
 import '../widgets/delete_dialog.dart';
-import '../../provider/material_provider.dart';
-import '../../provider/record_provider.dart';
+import '../../model/use_cases/record_controller.dart';
 import './edit_record_page.dart';
+import '../../model/entities/material.dart';
 
 class RecordDetailPage extends HookConsumerWidget {
   const RecordDetailPage({
     Key? key,
-    required this.id,
+    required this.data,
   }) : super(key: key);
 
-  final String id;
+  final Record? data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(recordProvider);
-    final Record? record = ref.watch(recordProvider.notifier).getById(id: id);
-    final materialTitle = record != null ? ref.watch(materialProvider.notifier).getById(record.materialId).title : '';
+    final materialTitle = data != null
+        ? ref
+            .watch(materialDataProvider.notifier)
+            .getById(data!.materialId)
+            .title
+        : '';
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -38,14 +43,14 @@ class RecordDetailPage extends HookConsumerWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return EditRecordPage(
-                  recordId: id,
+                  data: data,
                 );
               }));
             },
           )
         ],
       ),
-      body: record == null
+      body: data == null
           ? const SizedBox()
           : Padding(
               padding: const EdgeInsets.all(12.0),
@@ -65,8 +70,8 @@ class RecordDetailPage extends HookConsumerWidget {
                                 border:
                                     Border.all(width: 1, color: Colors.grey),
                               ),
-                              child: Center(
-                                  child: Text('${record.learningTime}分')),
+                              child:
+                                  Center(child: Text('${data?.learningTime}分')),
                             ),
                             Container(
                               margin: const EdgeInsets.symmetric(
@@ -77,9 +82,11 @@ class RecordDetailPage extends HookConsumerWidget {
                                     fontSize: 28, fontWeight: FontWeight.bold),
                               ),
                             ),
-                            Text(
-                                '登録日：${DateFormat("yyyy/MM/dd").format(record.createdAt)}'),
-                            Text(record.description ?? ''),
+                            data == null
+                                ? const SizedBox()
+                                : Text(
+                                    '登録日：${DateFormat("yyyy/MM/dd").format(data!.createdAt)}'),
+                            Text(data?.description ?? ''),
                           ],
                         ),
                       ),
@@ -92,7 +99,9 @@ class RecordDetailPage extends HookConsumerWidget {
                                 title: '学習記録を削除してよろしいですか？',
                                 content: 'このアクションは取り消せません。',
                                 deleteHandle: () {
-                                  ref.watch(recordProvider.notifier).remove(id);
+                                  ref
+                                      .watch(recordProvider.notifier)
+                                      .remove(data!.id);
                                   Navigator.of(context)
                                       .popUntil((route) => route.isFirst);
                                 },

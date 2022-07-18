@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDJhICBkzcqbuC2USBK-xJ9BuXK6l2jIYc',
-    appId: '1:561947646287:android:e1e956ae90e8f9232a0d3a',
-    messagingSenderId: '561947646287',
-    projectId: 'learning-management-app-40c1b',
-    storageBucket: 'learning-management-app-40c1b.appspot.com',
+    apiKey: 'AIzaSyCs3gSHjhs3rDsdVf52zsqaR6bhDMLgWF4',
+    appId: '1:662747309967:android:26fdc9e7ea23aa482b8dfa',
+    messagingSenderId: '662747309967',
+    projectId: 'learning-management-app-2cac2',
+    storageBucket: 'learning-management-app-2cac2.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAyL0-aQ0xzssVzKOtdVWlDG_ZxIukmjLA',
-    appId: '1:561947646287:ios:ffde219276dc29922a0d3a',
-    messagingSenderId: '561947646287',
-    projectId: 'learning-management-app-40c1b',
-    storageBucket: 'learning-management-app-40c1b.appspot.com',
-    iosClientId: '561947646287-ombglvbp22rqohr1605vnddqoj87seis.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBjW6zSLfEGb-pDWgPETXsOGj3jYbKTobQ',
+    appId: '1:662747309967:ios:650f6a18de2478e92b8dfa',
+    messagingSenderId: '662747309967',
+    projectId: 'learning-management-app-2cac2',
+    storageBucket: 'learning-management-app-2cac2.appspot.com',
+    iosClientId: '662747309967-fahjtr7obk3fuspr6dl2cr22lvfl37ig.apps.googleusercontent.com',
     iosBundleId: 'com.mori.learningManagementApp',
   );
 }

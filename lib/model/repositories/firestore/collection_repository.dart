@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'document.dart';
 
+// Firebaseのインスタンスを保持
 final collectionRepositoryProvider = Provider<CollectionRepository>(
   (ref) => CollectionRepository(FirebaseFirestore.instance),
 );

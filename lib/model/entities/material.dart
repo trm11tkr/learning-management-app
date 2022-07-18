@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../converters/date_time_timestamp_converter.dart';
+import '../repositories/firestore/collection_paging_repository.dart';
 import '.././converters/date_time_timestamp_converter.dart';
 import '../../extensions/date_extension.dart';
 import '../repositories/firestore/document.dart';
@@ -11,6 +13,17 @@ import 'storage_file.dart';
 
 part 'material.freezed.dart';
 part 'material.g.dart';
+
+/// CollectionPagingRepositoryProvider
+final materialDataPagingProvider = Provider.family.autoDispose<
+    CollectionPagingRepository<MaterialData>,
+    CollectionParam<MaterialData>>((ref, query) {
+  return CollectionPagingRepository<MaterialData>(
+    query: query.query,
+    limit: query.limit,
+    decode: query.decode,
+  );
+});
 
 @freezed
 class MaterialData with _$MaterialData {
@@ -58,8 +71,14 @@ class MaterialData with _$MaterialData {
         'image': image?.toJson(),
       };
 
+  Map<String, dynamic> get toUpdateDoc => <String, dynamic>{
+        'id': id,
+        'title': title,
+        'createdAt': createdAt,
+        'image': image?.toJson(),
+      };
+
   String get dateLabel {
     return createdAt.format(pattern: 'yyyy.M.d HH:mm');
   }
-
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../provider/tab_type_provider.dart';
+import '../../model/use_cases/tab_type_provider.dart';
 import './home_page.dart';
 import './my_page.dart';
 import './materials_page.dart';

@@ -111,7 +111,7 @@ class DocumentRepository {
     } on Exception catch (_) {
       // ignore exception
     }
-    return Document(ref: doc, exists: false, entity: Null);
+    return Document(ref: doc, exists: false, entity: null);
   }
 
   Future<bool> exists(String documentPath) async {
