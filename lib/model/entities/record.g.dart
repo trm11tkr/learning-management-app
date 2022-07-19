@@ -11,7 +11,8 @@ _$_Record _$$_RecordFromJson(Map<String, dynamic> json) => _$_Record(
       materialId: json['materialId'] as String,
       learningTime: json['learningTime'] as int,
       description: json['description'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: const DateTimeTimestampConverter()
+          .fromJson(json['createdAt'] as Timestamp),
     );
 
 Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
@@ -19,5 +20,6 @@ Map<String, dynamic> _$$_RecordToJson(_$_Record instance) => <String, dynamic>{
       'materialId': instance.materialId,
       'learningTime': instance.learningTime,
       'description': instance.description,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'createdAt':
+          const DateTimeTimestampConverter().toJson(instance.createdAt),
     };

@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
 
+import '../../model/use_cases/material_controller.dart';
 import '../pages/record_detail_page.dart';
+import '../../model/entities/record.dart';
 
-class RecordItem extends StatelessWidget {
-  const RecordItem({
-    Key? key,
-    required this.id,
-    required this.learningTime,
-    required this.materialName,
-    required this.createdAt,
-  }) : super(key: key);
+class RecordItem extends ConsumerWidget {
+  const RecordItem({Key? key, required this.data}) : super(key: key);
 
-  final String id;
-  final int learningTime;
-  final String materialName;
-  final DateTime createdAt;
+  final Record data;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return RecordDetailPage(id: id);
+          return RecordDetailPage(data: data);
         }));
       },
       child: Card(
@@ -32,20 +24,25 @@ class RecordItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
         child: ListTile(
           leading: Container(
+            padding: EdgeInsets.all(5.0),
             height: 50,
             width: 50,
             decoration: BoxDecoration(
               border: Border.all(width: 1, color: Colors.grey),
               shape: BoxShape.circle,
             ),
-            child: Center(child: Text('$learningTime分')),
+            child:
+                Center(child: FittedBox(child: Text('${data.learningTime}分'))),
           ),
           title: Text(
-            materialName,
+            ref
+                .watch(materialDataProvider.notifier)
+                .getById(data.materialId)
+                .title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           subtitle: Text(
-            DateFormat('yyyy/MM/dd').format(createdAt),
+            data.dateLabel,
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),

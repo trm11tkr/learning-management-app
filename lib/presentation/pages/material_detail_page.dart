@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../widgets/delete_dialog.dart';
-import '../../provider/material_provider.dart';
-import '../../provider/record_provider.dart';
+import '../../model/entities/material.dart';
+import '../../model/use_cases/material_controller.dart';
+import '../../model/use_cases/record_controller.dart';
 import './edit_material_page.dart';
+import '../widgets/show_indicator.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
     Key? key,
-    required this.id,
+    required this.data,
   }) : super(key: key);
 
-  final String id;
+  final MaterialData data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final material = ref.watch(materialProvider.notifier).getById(id);
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          material.id,
+          data.title,
           softWrap: true,
         ),
         actions: [
@@ -33,7 +32,7 @@ class MaterialDetailPage extends HookConsumerWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return EditMaterialPage(
-                  materialId: id,
+                  data: data,
                 );
               }));
             },
@@ -58,7 +57,7 @@ class MaterialDetailPage extends HookConsumerWidget {
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(width: 1, color: Colors.grey),
                         ),
-                        child: material.imageUrl == null
+                        child: data.image == null
                             ? const Icon(Icons.image)
                             : const Icon(Icons.image),
                       ),
@@ -66,13 +65,12 @@ class MaterialDetailPage extends HookConsumerWidget {
                         margin: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 20),
                         child: Text(
-                          material.title,
+                          data.title,
                           style: const TextStyle(
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(
-                          '登録日：${DateFormat("yyyy/MM/dd").format(material.createdAt)}'),
+                      Text('登録日：${data.dateLabel}'),
                     ],
                   ),
                 ),
@@ -82,13 +80,17 @@ class MaterialDetailPage extends HookConsumerWidget {
                       context: context,
                       builder: (_) {
                         return DeleteDialog(
-                          title: '「${material.title}」を削除してよろしいですか？',
-                          content: '${material.title}による学習記録は全て削除されます。',
+                          title: '「${data.title}」を削除してよろしいですか？',
+                          content: '${data.title}による学習記録は全て削除されます。',
                           deleteHandle: () {
-                            ref.watch(materialProvider.notifier).remove(id);
+                            showIndicator(context);
+                            ref
+                                .watch(materialDataProvider.notifier)
+                                .remove(data.id);
                             ref
                                 .watch(recordProvider.notifier)
-                                .removeByMaterialId(id);
+                                .removeByMaterialId(data.id);
+                            dismissIndicator(context);
                             Navigator.of(context)
                                 .popUntil((route) => route.isFirst);
                           },

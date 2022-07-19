@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:intl/intl.dart';
-
 import '../../model/entities/material.dart';
 import '../pages/material_detail_page.dart';
 
@@ -17,7 +14,7 @@ class MaterialItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
           return MaterialDetailPage(
-            id: material.id,
+            data: material,
           );
         }));
       },
@@ -39,7 +36,7 @@ class MaterialItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   border: Border.all(width: 1, color: Colors.grey),
                 ),
-                child: material.imageUrl == null
+                child: material.image == null
                     ? const Icon(
                         Icons.image,
                       )
@@ -54,7 +51,7 @@ class MaterialItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
+                  Text(material.dateLabel,
                       style: const TextStyle(color: Colors.grey))
                 ],
               ),

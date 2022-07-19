@@ -1,35 +1,25 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../provider/material_provider.dart';
 import '../../model/entities/material.dart';
+import '../../model/use_cases/material_controller.dart';
+import '../../extensions/exception_extension.dart';
+import '../widgets/show_indicator.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
-  const EditMaterialPage({Key? key, this.materialId}) : super(key: key);
+  const EditMaterialPage({Key? key, this.data}) : super(key: key);
 
-  final String? materialId;
+  final MaterialData? data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final titleEditingController = useTextEditingController();
+    final titleEditingController = useTextEditingController(text: data?.title);
     final imageEditingController = useTextEditingController();
     final form = GlobalKey<FormState>();
-
-    useEffect(() {
-      if (materialId != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          MaterialData material =
-              ref.watch(materialProvider.notifier).getById(materialId!);
-          titleEditingController.text = material.title;
-          imageEditingController.text = material.title;
-        });
-        return;
-      }
-    }, const []);
 
     return Scaffold(
       appBar: AppBar(
@@ -70,19 +60,34 @@ class EditMaterialPage extends HookConsumerWidget {
             ),
           ),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               if (form.currentState?.validate() != true) {
                 return;
               }
-              if (materialId != null) {
-                ref.watch(materialProvider.notifier).edit(
-                    materialId: materialId!,
-                    title: titleEditingController.text);
+              showIndicator(context);
+              if (data != null) {
+                final result = await ref
+                    .read(materialDataProvider.notifier)
+                    .update(data!.copyWith(title: titleEditingController.text));
+                result.when(
+                  success: () {},
+                  failure: (e) {
+                    print(e.errorMessage);
+                  },
+                );
               } else {
-                ref
-                    .watch(materialProvider.notifier)
-                    .add(titleEditingController.text);
+                final result = await ref
+                    .read(materialDataProvider.notifier)
+                    .create(titleEditingController.text);
+                result.when(
+                  success: () {},
+                  failure: (e) {
+                    print('失敗');
+                    print(e.errorMessage);
+                  },
+                );
               }
+              dismissIndicator(context);
               Navigator.of(context).pop();
             },
             child: const Text('登録'),

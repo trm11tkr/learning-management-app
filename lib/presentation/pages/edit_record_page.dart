@@ -4,36 +4,36 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../provider/record_provider.dart';
+import '../../model/use_cases/record_controller.dart';
+import '../../model/use_cases/material_controller.dart';
 import '../../model/entities/record.dart';
-import '../../provider/material_provider.dart';
 import '../pages/edit_material_page.dart';
+import '../../extensions/exception_extension.dart';
+import '../widgets/show_indicator.dart';
 
 final _key = GlobalKey<FormState>();
 
 class EditRecordPage extends HookConsumerWidget {
-  const EditRecordPage({Key? key, this.recordId}) : super(key: key);
+  const EditRecordPage({Key? key, this.data}) : super(key: key);
 
-  final String? recordId;
+  final Record? data;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
-    final materialData = ref.watch(materialProvider);
+    final materialData = ref.watch(materialDataProvider);
     final timerController = useTextEditingController();
     final materialController = useTextEditingController();
     final descriptionController = useTextEditingController();
 
     useEffect(() {
-      if (recordId != null) {
-        final Record record =
-            ref.watch(recordProvider.notifier).getById(id: recordId!);
+      if (data != null) {
         materialController.text = ref
-            .watch(materialProvider.notifier)
-            .getById(record.materialId)
+            .watch(materialDataProvider.notifier)
+            .getById(data!.materialId)
             .title;
-        timerController.text = '${record.learningTime}分';
-        descriptionController.text = record.description.toString();
+        timerController.text = '${data?.learningTime}分';
+        descriptionController.text = data?.description.toString() ?? '';
       }
     }, const []);
 
@@ -82,8 +82,7 @@ class EditRecordPage extends HookConsumerWidget {
     }
 
     return Scaffold(
-      appBar:
-          AppBar(title: recordId == null ? const Text('登録') : const Text('編集')),
+      appBar: AppBar(title: data == null ? const Text('登録') : const Text('編集')),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Padding(
@@ -139,6 +138,7 @@ class EditRecordPage extends HookConsumerWidget {
                       // キーボードが出ないようにする
                       FocusScope.of(context).requestFocus(FocusNode());
                       final settingValues = [
+                        '15',
                         '30',
                         '60',
                         '90',
@@ -173,33 +173,42 @@ class EditRecordPage extends HookConsumerWidget {
                         label: Text('メモ'), hintText: '過去問を3週した。'),
                   ),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_key.currentState?.validate() != true) {
                         return;
                       }
 
                       _key.currentState?.save();
                       final materialId = ref
-                          .watch(materialProvider.notifier)
-                          .getByTitle(materialController.text);
-                      if (recordId != null) {
-                        ref.watch(recordProvider.notifier).edit(
-                              recordId: recordId!,
-                              materialId: materialId,
-                              learningTime: int.parse(
-                                timerController.text.replaceFirst("分", ""),
-                              ),
-                              description: descriptionController.text,
-                            );
+                          .watch(materialDataProvider.notifier)
+                          .getByTitle(materialController.text)
+                          .id;
+                      showIndicator(context);
+                      if (data != null) {
+                        final result = await ref
+                            .read(recordProvider.notifier)
+                            .update(data!.copyWith(
+                                materialId: materialId,
+                                learningTime: int.parse(
+                                    timerController.text.replaceFirst("分", "")),
+                                description: descriptionController.text));
+                        result.when(
+                          success: () {},
+                          failure: (e) {
+                            print(e.errorMessage);
+                          },
+                        );
                       } else {
-                        ref.watch(recordProvider.notifier).add(
-                              materialId: materialId,
-                              learningTime: int.parse(
-                                timerController.text.replaceFirst("分", ""),
-                              ),
-                              description: descriptionController.text,
-                            );
+                        final result =
+                            await ref.read(recordProvider.notifier).create(
+                                  materialId,
+                                  int.parse(
+                                    timerController.text.replaceFirst("分", ""),
+                                  ),
+                                  descriptionController.text,
+                                );
                       }
+                      dismissIndicator(context);
                       Navigator.of(context).pop();
                     },
                     child: const Text('登録'),
