@@ -23,7 +23,7 @@ class MaterialDetailPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          data.id,
+          data.title,
           softWrap: true,
         ),
         actions: [
@@ -70,8 +70,7 @@ class MaterialDetailPage extends HookConsumerWidget {
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text(
-                          '登録日：${data.dateLabel}'),
+                      Text('登録日：${data.dateLabel}'),
                     ],
                   ),
                 ),
