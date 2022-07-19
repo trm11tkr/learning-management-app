@@ -62,6 +62,7 @@ class RecordController extends StateNotifier<List<Record>> {
         },
       );
       state = data.map((e) => e.entity).whereType<Record>().toList();
+      print('state : $state');
       return const ResultVoidData.success();
     } on AppException catch (e) {
       logger.shout(e);
@@ -187,18 +188,25 @@ class RecordController extends StateNotifier<List<Record>> {
   }
 
   // 教材と紐づく学習記録を削除
-  Future<ResultVoidData> removeByMaterialId(String docId) async {
+  Future<ResultVoidData> removeByMaterialId(String materialId) async {
     try {
       // final userId = _firebaseAuthRepository.loggedInUserId;
       final userId = '2';
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
-
-      await _documentRepository.remove(MaterialData.docPath(userId, docId));
+      final removeRecord = state
+          .where(
+            (e) => e.materialId == materialId,
+          )
+          .toList();
+      await Future.forEach(removeRecord, (record) async {
+        record as Record;
+        _documentRepository.remove(Record.docPath(userId, record.id));
+      });
       state = state
           .where(
-            (e) => e.id != docId,
+            (e) => e.materialId != materialId,
           )
           .toList();
       return const ResultVoidData.success();

@@ -13,9 +13,9 @@ part 'record.freezed.dart';
 part 'record.g.dart';
 
 /// CollectionPagingRepositoryProvider
-final recordPagingProvider = Provider.family.autoDispose<
-    CollectionPagingRepository<Record>,
-    CollectionParam<Record>>((ref, query) {
+final recordPagingProvider = Provider.family
+    .autoDispose<CollectionPagingRepository<Record>, CollectionParam<Record>>(
+        (ref, query) {
   return CollectionPagingRepository<Record>(
     query: query.query,
     limit: query.limit,
