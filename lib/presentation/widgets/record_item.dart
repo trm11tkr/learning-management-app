@@ -6,6 +6,7 @@ import 'package:learning_management_app/model/use_cases/material_controller.dart
 
 import '../pages/record_detail_page.dart';
 import '../../model/entities/record.dart';
+import '../../extensions/date_extension.dart';
 
 class RecordItem extends ConsumerWidget {
   const RecordItem({Key? key, required this.data}) : super(key: key);
@@ -41,7 +42,7 @@ class RecordItem extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           subtitle: Text(
-            DateFormat('yyyy/MM/dd').format(data.createdAt),
+            data.dateLabel,
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),

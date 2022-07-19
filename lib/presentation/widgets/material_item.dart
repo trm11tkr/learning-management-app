@@ -54,7 +54,7 @@ class MaterialItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Text(DateFormat('yyyy/MM/dd').format(material.createdAt),
+                  Text(material.dateLabel,
                       style: const TextStyle(color: Colors.grey))
                 ],
               ),

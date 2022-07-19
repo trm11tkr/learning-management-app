@@ -63,6 +63,6 @@ class Record with _$Record {
       };
 
   String get dateLabel {
-    return createdAt.format(pattern: 'yyyy.M.d HH:mm');
+    return createdAt.format(pattern: 'yyyy.M.d');
   }
 }

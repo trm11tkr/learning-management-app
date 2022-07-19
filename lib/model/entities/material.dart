@@ -79,6 +79,6 @@ class MaterialData with _$MaterialData {
       };
 
   String get dateLabel {
-    return createdAt.format(pattern: 'yyyy.M.d HH:mm');
+    return createdAt.format(pattern: 'yyyy.M.d');
   }
 }

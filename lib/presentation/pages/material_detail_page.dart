@@ -10,6 +10,7 @@ import '../../model/use_cases/material_controller.dart';
 import '../../model/use_cases/record_controller.dart';
 import './edit_material_page.dart';
 import '../widgets/show_indicator.dart';
+import '../../extensions/date_extension.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
@@ -73,7 +74,7 @@ class MaterialDetailPage extends HookConsumerWidget {
                         ),
                       ),
                       Text(
-                          '登録日：${DateFormat("yyyy/MM/dd").format(data.createdAt)}'),
+                          '登録日：${data.dateLabel}'),
                     ],
                   ),
                 ),

@@ -86,7 +86,7 @@ class RecordDetailPage extends HookConsumerWidget {
                             data == null
                                 ? const SizedBox()
                                 : Text(
-                                    '登録日：${DateFormat("yyyy/MM/dd").format(data!.createdAt)}'),
+                                    '登録日：${data?.dateLabel}'),
                             Text(data?.description ?? ''),
                           ],
                         ),
