@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../widgets/delete_dialog.dart';
 import '../../model/entities/material.dart';
@@ -10,7 +8,6 @@ import '../../model/use_cases/material_controller.dart';
 import '../../model/use_cases/record_controller.dart';
 import './edit_material_page.dart';
 import '../widgets/show_indicator.dart';
-import '../../extensions/date_extension.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
