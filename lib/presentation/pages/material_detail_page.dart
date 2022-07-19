@@ -9,6 +9,7 @@ import '../../model/entities/material.dart';
 import '../../model/use_cases/material_controller.dart';
 import '../../model/use_cases/record_controller.dart';
 import './edit_material_page.dart';
+import '../widgets/show_indicator.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
@@ -85,10 +86,14 @@ class MaterialDetailPage extends HookConsumerWidget {
                           title: '「${data.title}」を削除してよろしいですか？',
                           content: '${data.title}による学習記録は全て削除されます。',
                           deleteHandle: () {
-                            ref.watch(materialDataProvider.notifier).remove(data.id);
+                            showIndicator(context);
+                            ref
+                                .watch(materialDataProvider.notifier)
+                                .remove(data.id);
                             ref
                                 .watch(recordProvider.notifier)
                                 .removeByMaterialId(data.id);
+                            dismissIndicator(context);
                             Navigator.of(context)
                                 .popUntil((route) => route.isFirst);
                           },

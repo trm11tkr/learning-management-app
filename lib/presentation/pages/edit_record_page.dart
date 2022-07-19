@@ -9,6 +9,7 @@ import '../../model/use_cases/material_controller.dart';
 import '../../model/entities/record.dart';
 import '../pages/edit_material_page.dart';
 import '../../extensions/exception_extension.dart';
+import '../widgets/show_indicator.dart';
 
 final _key = GlobalKey<FormState>();
 
@@ -182,6 +183,7 @@ class EditRecordPage extends HookConsumerWidget {
                           .watch(materialDataProvider.notifier)
                           .getByTitle(materialController.text)
                           .id;
+                      showIndicator(context);
                       if (data != null) {
                         final result = await ref
                             .read(recordProvider.notifier)
@@ -206,6 +208,7 @@ class EditRecordPage extends HookConsumerWidget {
                                   descriptionController.text,
                                 );
                       }
+                      dismissIndicator(context);
                       Navigator.of(context).pop();
                     },
                     child: const Text('登録'),

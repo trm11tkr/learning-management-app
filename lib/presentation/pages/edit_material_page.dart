@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../model/entities/material.dart';
 import '../../model/use_cases/material_controller.dart';
 import '../../extensions/exception_extension.dart';
+import '../widgets/show_indicator.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
   const EditMaterialPage({Key? key, this.data}) : super(key: key);
@@ -63,6 +64,7 @@ class EditMaterialPage extends HookConsumerWidget {
               if (form.currentState?.validate() != true) {
                 return;
               }
+              showIndicator(context);
               if (data != null) {
                 final result = await ref
                     .read(materialDataProvider.notifier)
@@ -78,14 +80,14 @@ class EditMaterialPage extends HookConsumerWidget {
                     .read(materialDataProvider.notifier)
                     .create(titleEditingController.text);
                 result.when(
-                  success: () {
-                  },
+                  success: () {},
                   failure: (e) {
                     print('失敗');
                     print(e.errorMessage);
                   },
                 );
               }
+              dismissIndicator(context);
               Navigator.of(context).pop();
             },
             child: const Text('登録'),

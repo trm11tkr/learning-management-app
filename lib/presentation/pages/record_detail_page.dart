@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:learning_management_app/model/use_cases/material_controller.dart';
 
+import '../../model/use_cases/material_controller.dart';
 import '../../model/entities/record.dart';
 import '../widgets/delete_dialog.dart';
 import '../../model/use_cases/record_controller.dart';
 import './edit_record_page.dart';
+import '../widgets/show_indicator.dart';
 import '../../model/entities/material.dart';
 
 class RecordDetailPage extends HookConsumerWidget {
@@ -99,9 +100,11 @@ class RecordDetailPage extends HookConsumerWidget {
                                 title: '学習記録を削除してよろしいですか？',
                                 content: 'このアクションは取り消せません。',
                                 deleteHandle: () {
+                                  showIndicator(context);
                                   ref
                                       .watch(recordProvider.notifier)
                                       .remove(data!.id);
+                                  dismissIndicator(context);
                                   Navigator.of(context)
                                       .popUntil((route) => route.isFirst);
                                 },
