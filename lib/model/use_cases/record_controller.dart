@@ -7,6 +7,7 @@ import '../../utils/logger.dart';
 import '../../extensions/exception_extension.dart';
 import '../repositories/firestore/collection_repository.dart';
 import '../repositories/firestore/collection_paging_repository.dart';
+import '../repositories/firebase_auth/firebase_auth_repository.dart';
 import '../repositories/firestore/document.dart';
 import '../repositories/firestore/document_repository.dart';
 import '../../results/result_void_data.dart';
@@ -20,15 +21,15 @@ class RecordController extends StateNotifier<List<Record>> {
   RecordController(
     this._read,
   ) : super([]) {
-    // final userId = _firebaseAuthRepository.loggedInUserId;
-    // if (userId == null) {
-    //   return;
-    // }
+    final userId = _firebaseAuthRepository.loggedInUserId;
+    if (userId == null) {
+      return;
+    }
     _collectionPagingRepository = _read(
       recordPagingProvider(
         CollectionParam<Record>(
           query: Document.colRef(
-            Record.collectionPath('2'),
+            Record.collectionPath(userId),
           ).orderBy('createdAt', descending: true),
           limit: 20,
           decode: Record.fromJson,
@@ -39,8 +40,8 @@ class RecordController extends StateNotifier<List<Record>> {
 
   final Reader _read;
 
-  // FirebaseAuthRepository get _firebaseAuthRepository =>
-  //     _read(firebaseAuthRepositoryProvider);
+  FirebaseAuthRepository get _firebaseAuthRepository =>
+      _read(firebaseAuthRepositoryProvider);
 
   DocumentRepository get _documentRepository =>
       _read(documentRepositoryProvider);
@@ -103,8 +104,7 @@ class RecordController extends StateNotifier<List<Record>> {
   Future<ResultVoidData> create(
       String materialId, int learningTime, String? description) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
@@ -132,8 +132,7 @@ class RecordController extends StateNotifier<List<Record>> {
   /// 更新
   Future<ResultVoidData> update(Record record) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
@@ -165,8 +164,7 @@ class RecordController extends StateNotifier<List<Record>> {
   /// 削除
   Future<ResultVoidData> remove(String docId) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
@@ -190,8 +188,7 @@ class RecordController extends StateNotifier<List<Record>> {
   // 教材と紐づく学習記録を削除
   Future<ResultVoidData> removeByMaterialId(String materialId) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }

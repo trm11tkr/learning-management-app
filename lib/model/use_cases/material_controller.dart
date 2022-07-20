@@ -5,6 +5,7 @@ import '../entities/material.dart';
 import '../../utils/logger.dart';
 import '../../extensions/exception_extension.dart';
 import '../repositories/firestore/collection_paging_repository.dart';
+import '../repositories/firebase_auth/firebase_auth_repository.dart';
 import '../repositories/firestore/document.dart';
 import '../repositories/firestore/document_repository.dart';
 import '../../results/result_void_data.dart';
@@ -18,15 +19,15 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
   MaterialDataController(
     this._read,
   ) : super([]) {
-    // final userId = _firebaseAuthRepository.loggedInUserId;
-    // if (userId == null) {
-    //   return;
-    // }
+    final userId = _firebaseAuthRepository.loggedInUserId;
+    if (userId == null) {
+      return;
+    }
     _collectionPagingRepository = _read(
       materialDataPagingProvider(
         CollectionParam<MaterialData>(
           query: Document.colRef(
-            MaterialData.collectionPath('2'),
+            MaterialData.collectionPath(userId),
           ).orderBy('createdAt', descending: true),
           limit: 20,
           decode: MaterialData.fromJson,
@@ -37,8 +38,8 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
 
   final Reader _read;
 
-  // FirebaseAuthRepository get _firebaseAuthRepository =>
-  //     _read(firebaseAuthRepositoryProvider);
+  FirebaseAuthRepository get _firebaseAuthRepository =>
+      _read(firebaseAuthRepositoryProvider);
 
   DocumentRepository get _documentRepository =>
       _read(documentRepositoryProvider);
@@ -99,8 +100,7 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
   /// 作成
   Future<ResultVoidData> create(String title) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
@@ -123,8 +123,7 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
   /// 更新
   Future<ResultVoidData> update(MaterialData materialData) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
@@ -156,8 +155,7 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
   /// 削除
   Future<ResultVoidData> remove(String docId) async {
     try {
-      // final userId = _firebaseAuthRepository.loggedInUserId;
-      final userId = '2';
+      final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
         throw AppException(title: 'ログインしてください');
       }
