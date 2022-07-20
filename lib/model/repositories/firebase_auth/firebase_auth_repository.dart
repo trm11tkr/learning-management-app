@@ -75,9 +75,9 @@ class FirebaseAuthRepository {
   Future<void> signOut() => _auth.signOut();
 
   LoginType? _loginType(User user) {
-    if (user.isAnonymous) {
-      return LoginType.anonymously;
-    }
+    // if (user.isAnonymous) {
+    //   return LoginType.anonymously;
+    // }
     if (user.providerData.firstWhereOrNull(
           (element) => element.providerId == AuthProviderId.email.value,
         ) !=

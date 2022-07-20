@@ -24,9 +24,9 @@ class CreateUserWithEmailAndPassword {
       // NOTE: メールアドレスの確認を完了させるまではsignInに変更しない
       authState.update((state) => AuthState.noSignIn);
 
-      logger.info('Emailサインアップに成功しました');
+      print('Emailサインアップに成功しました');
     } on FirebaseAuthException catch (e) {
-      logger.shout(e);
+      print(e);
 
       if (e.code == AuthErrorCode.emailAlreadyInUse.value) {
         throw AppException(title: 'このアカウントは既に存在します');

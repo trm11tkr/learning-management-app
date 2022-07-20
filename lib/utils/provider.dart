@@ -11,7 +11,7 @@ enum AuthState {
   noSignIn,
 
   /// 匿名認証
-  signInWithAnonymously,
+  // signInWithAnonymously,
 
   /// サインインしている
   signIn,
@@ -29,8 +29,8 @@ final authStateProvider = StateProvider<AuthState>((ref) {
       return user?.emailVerified == true
           ? AuthState.signIn
           : AuthState.noSignIn;
-    case LoginType.anonymously:
-      return AuthState.signInWithAnonymously;
+    // case LoginType.anonymously:
+    //   return AuthState.signInWithAnonymously;
     case LoginType.apple:
     case LoginType.google:
       return AuthState.signIn;

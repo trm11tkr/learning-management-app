@@ -2,5 +2,5 @@ enum LoginType {
   apple,
   google,
   email,
-  anonymously,
+  // anonymously,
 }

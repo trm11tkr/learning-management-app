@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import './presentation/pages/tabs_page.dart';
 import './config/custom_theme_data.dart';
+import './presentation/pages/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: customLightThemeData,
       darkTheme: customDarkThemeData,
-      home: const TabsPage(),
+      home: const LoginPage(),
     );
   }
 }

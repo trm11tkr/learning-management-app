@@ -29,9 +29,9 @@ class SignInWithEmailAndPassword {
         authState.update((state) => AuthState.noSignIn);
       }
 
-      logger.info('Emailサインインに成功しました');
+      print('Emailサインインに成功しました');
     } on FirebaseAuthException catch (e) {
-      logger.shout(e);
+      print(e);
 
       if (e.code == AuthErrorCode.invalidEmail.value ||
           e.code == AuthErrorCode.wrongPassword.value ||
