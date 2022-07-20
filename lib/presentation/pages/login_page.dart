@@ -169,7 +169,18 @@ class LoginPage extends HookConsumerWidget {
                     ),
             ),
             isNewAccount.value == true
-                ? const SizedBox()
+                ? TextButton(
+                    onPressed: () {
+                      isNewAccount.value = false;
+                    },
+                    child: Text(
+                      'サインインに戻る',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
                 : TextButton(
                     onPressed: () {
                       isNewAccount.value = true;
