@@ -11,7 +11,6 @@ class MyPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(fetchMyProfileProvider);
-    print(profile.asData);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -34,9 +33,14 @@ class MyPage extends HookConsumerWidget {
                   }),
               const SizedBox(height: 20),
               Text(
-                profile.value?.name ?? '-',
-                style: TextStyle(fontSize: 30),
-              )
+                profile.value?.name ?? '田中',
+                style: const TextStyle(
+                    fontSize: 30, overflow: TextOverflow.ellipsis),
+              ),
+              Text('目標学習時間(分/日)：${profile.value?.targetTime ?? "60"}分',
+                  style: Theme.of(context).textTheme.bodyMedium),
+              Text('学習教材数：${profile.value?.targetTime ?? "0"}',
+                  style: Theme.of(context).textTheme.bodyMedium)
             ],
           ),
         ),
