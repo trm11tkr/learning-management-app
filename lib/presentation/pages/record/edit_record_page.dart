@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../model/use_cases/record_controller.dart';
-import '../../model/use_cases/material_controller.dart';
-import '../../model/entities/record.dart';
-import '../pages/edit_material_page.dart';
-import '../../extensions/exception_extension.dart';
-import '../widgets/show_indicator.dart';
+import '../../../model/use_cases/record_controller.dart';
+import '../../../model/use_cases/material_controller.dart';
+import '../../../model/entities/record.dart';
+import '../material/edit_material_page.dart';
+import '../../../extensions/exception_extension.dart';
+import '../../widgets/show_indicator.dart';
 
 final _key = GlobalKey<FormState>();
 

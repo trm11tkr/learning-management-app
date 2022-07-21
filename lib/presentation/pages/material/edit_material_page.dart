@@ -6,11 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
 
-import '../../model/entities/material.dart';
-import '../../model/use_cases/material_controller.dart';
-import '../../extensions/exception_extension.dart';
-import '../widgets/show_indicator.dart';
-import './image_viewer/image_viewer.dart';
+import '../../../model/entities/material.dart';
+import '../../../model/use_cases/material_controller.dart';
+import '../../../extensions/exception_extension.dart';
+import '../../widgets/show_indicator.dart';
+import '../image_viewer/image_viewer.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
   const EditMaterialPage({Key? key, this.data}) : super(key: key);

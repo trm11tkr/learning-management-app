@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../widgets/record_item.dart';
-import '../../model/entities/record.dart';
-import '../../model/use_cases/record_controller.dart';
-import '../pages/edit_record_page.dart';
-import '../widgets/chart.dart';
-import '../custom_hooks/use_effect_once.dart';
-import '../../extensions/exception_extension.dart';
+import '../../widgets/record_item.dart';
+import '../../../model/entities/record.dart';
+import '../../../model/use_cases/record_controller.dart';
+import './edit_record_page.dart';
+import '../../widgets/chart.dart';
+import '../../custom_hooks/use_effect_once.dart';
+import '../../../extensions/exception_extension.dart';
 
 class HomePage extends HookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);

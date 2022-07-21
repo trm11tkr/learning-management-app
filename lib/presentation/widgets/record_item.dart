@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/use_cases/material_controller.dart';
-import '../pages/record_detail_page.dart';
+import '../pages/record/record_detail_page.dart';
 import '../../model/entities/record.dart';
 
 class RecordItem extends ConsumerWidget {

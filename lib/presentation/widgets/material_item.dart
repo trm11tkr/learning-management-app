@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
 
+import './thumbnail.dart';
 import '../../model/entities/material.dart';
-import '../pages/material_detail_page.dart';
+import '../pages/material/material_detail_page.dart';
 import '../pages/image_viewer/image_viewer.dart';
 
 class MaterialItem extends StatelessWidget {
