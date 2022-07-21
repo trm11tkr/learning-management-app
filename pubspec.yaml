@@ -43,6 +43,11 @@ dependencies:
   firebase_auth: ^3.3.20
   rxdart: ^0.27.5
   simple_logger: ^1.9.0
+  extended_image: ^6.2.1
+  image_gallery_saver: ^1.7.1
+  permission_handler: ^10.0.0
+  adaptive_dialog: ^1.6.4+2
+  dismissible_page: ^0.7.3
 
 dev_dependencies:
   flutter_test:
