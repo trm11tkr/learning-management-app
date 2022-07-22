@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:learning_management_app/presentation/pages/my_page/edit_my_page.dart';
-import 'package:learning_management_app/utils/provider.dart';
 
+import './edit_my_page.dart';
 import '../login_page.dart';
 import '../../../model/use_cases/my_profile/fetch_my_profile.dart';
 import '../../widgets/thumbnail.dart';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
@@ -12,7 +10,6 @@ import '../../../model/use_cases/material_controller.dart';
 import '../../../extensions/exception_extension.dart';
 import '../../widgets/show_indicator.dart';
 import '../image_viewer/image_viewer.dart';
-import '../../../utils/logger.dart';
 import '../../../extensions/context_extension.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
