@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 import '../../widgets/record_item.dart';
 import '../../../model/entities/record.dart';
@@ -28,7 +29,7 @@ class HomePage extends HookConsumerWidget {
         result.when(
           success: () {},
           failure: (e) {
-            print(e.errorMessage);
+            showOkAlertDialog(context: context, title: e.errorMessage);
           },
         );
       });

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,6 +12,8 @@ import '../../../model/use_cases/material_controller.dart';
 import '../../../extensions/exception_extension.dart';
 import '../../widgets/show_indicator.dart';
 import '../image_viewer/image_viewer.dart';
+import '../../../utils/logger.dart';
+import '../../../extensions/context_extension.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
   const EditMaterialPage({Key? key, this.data}) : super(key: key);
@@ -76,7 +79,7 @@ class EditMaterialPage extends HookConsumerWidget {
                     result.when(
                       success: () {},
                       failure: (e) {
-                        print(e.errorMessage);
+                        showOkAlertDialog(context: context, title: e.errorMessage);
                       },
                     );
                   } else {
@@ -84,10 +87,11 @@ class EditMaterialPage extends HookConsumerWidget {
                         .read(materialDataProvider.notifier)
                         .create(titleEditingController.text);
                     result.when(
-                      success: () {},
+                      success: () {
+                        context.showSnackBar('更新しました');
+                      },
                       failure: (e) {
-                        print('失敗');
-                        print(e.errorMessage);
+                        showOkAlertDialog(context: context, title: e.errorMessage);
                       },
                     );
                   }

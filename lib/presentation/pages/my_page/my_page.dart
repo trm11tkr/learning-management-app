@@ -87,12 +87,6 @@ class MyPage extends HookConsumerWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print(profile);
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

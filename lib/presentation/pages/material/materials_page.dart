@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 import '../../../model/entities/material.dart';
 import '../../widgets/material_item.dart';
@@ -24,7 +25,7 @@ class MaterialsPage extends HookConsumerWidget {
         result.when(
           success: () {},
           failure: (e) {
-            print(e.errorMessage);
+            showOkAlertDialog(context: context, title: e.errorMessage);
           },
         );
       });

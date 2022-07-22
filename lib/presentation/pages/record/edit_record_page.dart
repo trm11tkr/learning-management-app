@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../model/use_cases/record_controller.dart';
@@ -195,7 +196,7 @@ class EditRecordPage extends HookConsumerWidget {
                         result.when(
                           success: () {},
                           failure: (e) {
-                            print(e.errorMessage);
+                            showOkAlertDialog(context: context, title: e.errorMessage);
                           },
                         );
                       } else {

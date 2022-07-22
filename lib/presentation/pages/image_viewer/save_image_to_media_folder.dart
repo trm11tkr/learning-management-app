@@ -37,7 +37,7 @@ Future<void> saveImageToMediaFolder(
     await ImageGallerySaver.saveImage(imageBytes);
     context.showSnackBar('画像を保存しました');
   } on Exception catch (e) {
-    print(e);
+    logger.shout(e);
     context.showSnackBar('保存に失敗しました');
   }
   dismissIndicator(context);

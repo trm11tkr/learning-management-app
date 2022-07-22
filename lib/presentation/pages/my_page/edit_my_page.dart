@@ -20,6 +20,7 @@ import '../../../model/use_cases/my_profile/save_my_profile.dart';
 import '../../../extensions/context_extension.dart';
 import '../../widgets/rounded_button.dart';
 import '../../widgets/sheets/show_photo_and_crop_bottom_sheet.dart';
+import '../../../utils/logger.dart';
 
 class EditMyPage extends HookConsumerWidget {
   const EditMyPage({Key? key}) : super(key: key);
@@ -119,7 +120,7 @@ class EditMyPage extends HookConsumerWidget {
                 showIndicator(context);
                 await ref.read(saveMyProfileImageProvider).call(compressImage);
               } on Exception catch (e) {
-                print(e);
+                logger.shout(e);
                 await showOkAlertDialog(
                   context: context,
                   title: '画像を保存できませんでした',
@@ -222,7 +223,7 @@ class EditMyPage extends HookConsumerWidget {
                   context.showSnackBar('保存しました');
                   Navigator.of(context).pop();
                 } on Exception catch (e) {
-                  print(e);
+                  logger.shout(e);
                   dismissIndicator(context);
                   await showOkAlertDialog(
                       context: context, title: '保存できませんでした');
