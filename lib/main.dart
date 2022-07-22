@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,14 +7,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:path_provider/path_provider.dart';
 
+import './utils/logger.dart';
 import './presentation/pages/tabs_page.dart';
 import './config/custom_theme_data.dart';
 import './presentation/pages/login_page.dart';
+import './model/use_cases/image_compress.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  late final Directory tempDirectory;
+  Logger.configure();
 
   await Future.wait([
     // 縦固定
@@ -20,11 +27,19 @@ void main() async {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]),
+    Future(() async {
+      tempDirectory = await getTemporaryDirectory();
+    }),
   ]);
   // 日本語フォーマット
   await initializeDateFormatting('ja');
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(
+    overrides: [
+      imageCompressProvider.overrideWithValue(ImageCompress(tempDirectory))
+    ],
+    
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

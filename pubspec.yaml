@@ -48,6 +48,13 @@ dependencies:
   permission_handler: ^10.0.0
   adaptive_dialog: ^1.6.4+2
   dismissible_page: ^0.7.3
+  image_picker: ^0.8.5+3
+  image_cropper: ^2.0.3
+  flutter_image_compress: ^1.1.0
+  uuid: ^3.0.6
+  hashids2: ^2.0.0
+  firebase_storage: ^10.3.3
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:
