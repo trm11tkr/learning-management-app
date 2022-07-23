@@ -158,6 +158,7 @@ class EditMyPage extends HookConsumerWidget {
                 textAlign: TextAlign.end,
                 initialValue: '${profile?.targetTime}分',
                 decoration: const InputDecoration(label: Text('学習時間')),
+                
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   final settingValues = [
