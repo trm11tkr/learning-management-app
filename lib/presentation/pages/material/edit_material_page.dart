@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
@@ -15,6 +18,8 @@ import '../image_viewer/image_viewer.dart';
 import '../../../extensions/context_extension.dart';
 import '../../widgets/sheets/show_photo_and_crop_bottom_sheet.dart';
 import '../../../utils/logger.dart';
+import '../../custom_hooks/use_effect_once.dart';
+import '../../custom_hooks/use_form_field_state_key.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
   const EditMaterialPage({Key? key, this.material}) : super(key: key);
@@ -24,8 +29,22 @@ class EditMaterialPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
-    final titleEditingController = useTextEditingController(text: material?.title);
-    final form = GlobalKey<FormState>();
+    final titleEditingController =
+        useTextEditingController(text: material?.title);
+
+    /// カスタムフック
+    final titleFormKey = useFormFieldStateKey();
+
+    final materialIdState = useState<String?>(material?.id);
+    final showImageState = useState<File?>(null);
+    final uint8ListState = useState<Uint8List?>(null);
+
+    useEffectOnce(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        titleFormKey.currentState?.didChange(material?.title);
+      });
+      return null;
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -38,57 +57,42 @@ class EditMaterialPage extends HookConsumerWidget {
           children: [
             GestureDetector(
               onTap: () async {
-              final selectedImage = await showPhotoAndCropBottomSheet(
-                context,
-                title: '教材画像',
-              );
-              if (selectedImage == null) {
-                return;
-              }
-              // 圧縮して設定
-              final compressImage =
-                  await ref.read(imageCompressProvider)(selectedImage);
-              if (compressImage == null) {
-                return;
-              }
-              try {
-                showIndicator(context);
-                await ref.read(saveMaterialImageProvider).call(material!.id, compressImage);
-              } on Exception catch (e) {
-                logger.shout(e);
-                await showOkAlertDialog(
-                  context: context,
-                  title: '画像を保存できませんでした',
+                final selectedImage = await showPhotoAndCropBottomSheet(
+                  context,
+                  title: 'サムネイル',
                 );
-              } finally {
-                dismissIndicator(context);
-              }
-            },
-              child: Thumbnail(
-                height: mediaQuery.size.height * 0.3,
-                width: mediaQuery.size.width * 0.4,
-                url: material?.image?.url,
-                onTap: () {
-                  final url = material?.image?.url;
-                  if (url != null) {
-                    ImageViewer.show(
-                      context,
-                      urls: [url],
-                      heroTag: 'material',
-                    );
-                  }
-                },
-              ),
+                if (selectedImage == null) {
+                  return;
+                }
+                // 圧縮して設定
+                final compressImage =
+                    await ref.read(imageCompressProvider)(selectedImage);
+                if (compressImage == null) {
+                  return;
+                }
+                showImageState.value = selectedImage;
+                uint8ListState.value = compressImage;
+              },
+              child: showImageState.value == null
+                  ? Thumbnail(
+                      height: mediaQuery.size.height * 0.3,
+                      width: mediaQuery.size.width * 0.4,
+                      url: material?.image?.url)
+                  : Thumbnail(
+                      height: mediaQuery.size.height * 0.3,
+                      width: mediaQuery.size.width * 0.4,
+                      file: showImageState.value),
             ),
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
               Form(
-                key: form,
                 child: TextFormField(
                   controller: titleEditingController,
                   decoration: const InputDecoration(
                     labelText: 'タイトル',
                     hintText: 'TOEIC 出る単特急 金のフレーズ',
+                    isDense: true,
                   ),
+                  key: titleFormKey,
                   validator: (value) => (value == null || value.trim().isEmpty)
                       ? 'タイトル正しく入力してください'
                       : null,
@@ -96,33 +100,46 @@ class EditMaterialPage extends HookConsumerWidget {
               ),
               TextButton(
                 onPressed: () async {
-                  if (form.currentState?.validate() != true) {
+                  if (titleFormKey.currentState?.validate() != true) {
                     return;
                   }
                   showIndicator(context);
                   if (material != null) {
                     final result = await ref
                         .read(materialDataProvider.notifier)
-                        .update(
-                            material!.copyWith(title: titleEditingController.text));
+                        .update(material!
+                            .copyWith(title: titleEditingController.text));
                     result.when(
-                      success: () {},
+                      success: () {
+                        logger.info('Recordを無事に更新');
+                      },
                       failure: (e) {
-                        showOkAlertDialog(context: context, title: e.errorMessage);
+                        showOkAlertDialog(
+                            context: context, title: e.errorMessage);
                       },
                     );
                   } else {
                     final result = await ref
                         .read(materialDataProvider.notifier)
-                        .create(title:titleEditingController.text);
+                        .create(title: titleEditingController.text);
                     result.when(
-                      success: () {
+                      success: (materialId) {
+                        logger.info('Recordを無事に作成');
+                        materialIdState.value = materialId;
                         context.showSnackBar('更新しました');
                       },
                       failure: (e) {
-                        showOkAlertDialog(context: context, title: e.errorMessage);
+                        showOkAlertDialog(
+                            context: context, title: e.errorMessage);
                       },
                     );
+                  }
+
+                  if (materialIdState.value != null &&
+                      uint8ListState.value != null) {
+                    await ref
+                        .read(saveMaterialImageProvider)
+                        .call(materialIdState.value!, uint8ListState.value!);
                   }
                   dismissIndicator(context);
                   Navigator.of(context).pop();

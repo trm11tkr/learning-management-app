@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
+import 'package:learning_management_app/utils/logger.dart';
 
 import '../../widgets/delete_dialog.dart';
 import '../../../model/entities/material.dart';
@@ -20,6 +21,7 @@ class MaterialDetailPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(materialDataProvider);
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
