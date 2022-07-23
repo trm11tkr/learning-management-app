@@ -98,7 +98,7 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
   }
 
   /// 作成
-  Future<ResultVoidData> create(String title) async {
+  Future<ResultVoidData> create({required String title, }) async {
     try {
       final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
@@ -181,7 +181,7 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
     return state.firstWhere((material) => material.id == materialId);
   }
 
-   // タイトルから検索（後から変更）
+  // タイトルから検索（後から変更）
   MaterialData getByTitle(String title) {
     return state.firstWhere((material) => material.title == title);
   }

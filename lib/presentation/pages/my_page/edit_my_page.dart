@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +30,8 @@ class EditMyPage extends HookConsumerWidget {
 
     final profile = ref.watch(fetchMyProfileProvider).value;
     final targetTimeState = useState<int?>(null);
+    final showImageState = useState<File?>(null);
+    final uint8ListState = useState<Uint8List?>(null);
 
     /// カスタムフック
     final nameFormKey = useFormFieldStateKey();
@@ -95,41 +98,28 @@ class EditMyPage extends HookConsumerWidget {
       body: Column(
         children: [
           GestureDetector(
-            onTap: () async {
-              final ImagePicker picker = ImagePicker();
-              final selectedImage = await showPhotoAndCropBottomSheet(
-                context,
-                title: 'プロフィール画像',
-              );
-              if (selectedImage == null) {
-                return;
-              }
-
-              // 圧縮して設定
-              final compressImage =
-                  await ref.read(imageCompressProvider)(selectedImage);
-              if (compressImage == null) {
-                return;
-              }
-
-              try {
-                showIndicator(context);
-                await ref.read(saveMyProfileImageProvider).call(compressImage);
-              } on Exception catch (e) {
-                logger.shout(e);
-                await showOkAlertDialog(
-                  context: context,
-                  title: '画像を保存できませんでした',
+              onTap: () async {
+                final ImagePicker picker = ImagePicker();
+                final selectedImage = await showPhotoAndCropBottomSheet(
+                  context,
+                  title: 'プロフィール画像',
                 );
-              } finally {
-                dismissIndicator(context);
-              }
-            },
-            child: CircleThumbnail(
-              size: 96,
-              url: profile?.image?.url,
-            ),
-          ),
+                if (selectedImage == null) {
+                  return;
+                }
+
+                // 圧縮して設定
+                final compressImage =
+                    await ref.read(imageCompressProvider)(selectedImage);
+                if (compressImage == null) {
+                  return;
+                }
+                showImageState.value = selectedImage;
+                uint8ListState.value = compressImage;
+              },
+              child: showImageState.value == null
+                  ? CircleThumbnail(size: 96, url: profile?.image?.url)
+                  : CircleThumbnail(size: 96, file: showImageState.value)),
           const SizedBox(height: 8),
 
           // 入力フォーム
@@ -215,6 +205,11 @@ class EditMyPage extends HookConsumerWidget {
                         name: name,
                         targetTime: targetTime,
                       );
+                  if (uint8ListState.value != null) {
+                    await ref
+                        .read(saveMyProfileImageProvider)
+                        .call(uint8ListState.value!);
+                  }
                   dismissIndicator(context);
                   context.showSnackBar('保存しました');
                   Navigator.of(context).pop();
