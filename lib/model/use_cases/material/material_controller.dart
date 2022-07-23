@@ -1,14 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../exceptions/app_exception.dart';
-import '../entities/material.dart';
-import '../../utils/logger.dart';
-import '../../extensions/exception_extension.dart';
-import '../repositories/firestore/collection_paging_repository.dart';
-import '../repositories/firebase_auth/firebase_auth_repository.dart';
-import '../repositories/firestore/document.dart';
-import '../repositories/firestore/document_repository.dart';
-import '../../results/result_void_data.dart';
+import '../../../../../exceptions/app_exception.dart';
+import '../../entities/material.dart';
+import '../../../utils/logger.dart';
+import '../../../extensions/exception_extension.dart';
+import '../../repositories/firestore/collection_paging_repository.dart';
+import '../../repositories/firebase_auth/firebase_auth_repository.dart';
+import '../../repositories/firestore/document.dart';
+import '../../repositories/firestore/document_repository.dart';
+import '../../../results/result_void_data.dart';
 
 final materialDataProvider =
     StateNotifierProvider<MaterialDataController, List<MaterialData>>((ref) {

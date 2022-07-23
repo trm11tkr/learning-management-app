@@ -30,8 +30,6 @@ class EditMyPage extends HookConsumerWidget {
     final profile = ref.watch(fetchMyProfileProvider).value;
     final targetTimeState = useState<int?>(null);
 
-    final imageFile = useState<File?>(null);
-
     /// カスタムフック
     final nameFormKey = useFormFieldStateKey();
     final targetTimeFormKey = useFormFieldStateKeyWithInt();
@@ -106,7 +104,6 @@ class EditMyPage extends HookConsumerWidget {
               if (selectedImage == null) {
                 return;
               }
-              imageFile.value = selectedImage;
 
               // 圧縮して設定
               final compressImage =

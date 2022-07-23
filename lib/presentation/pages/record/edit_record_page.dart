@@ -6,7 +6,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../model/use_cases/record_controller.dart';
-import '../../../model/use_cases/material_controller.dart';
+import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
 import '../material/edit_material_page.dart';
 import '../../../extensions/exception_extension.dart';

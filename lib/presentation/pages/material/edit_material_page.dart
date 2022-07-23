@@ -6,7 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
 
 import '../../../model/entities/material.dart';
-import '../../../model/use_cases/material_controller.dart';
+import '../../../model/use_cases/image_compress.dart';
+import '../../../model/use_cases/material/material_controller.dart';
 import '../../../extensions/exception_extension.dart';
 import '../../widgets/show_indicator.dart';
 import '../image_viewer/image_viewer.dart';
@@ -21,7 +22,6 @@ class EditMaterialPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final titleEditingController = useTextEditingController(text: data?.title);
-    final imageEditingController = useTextEditingController();
     final form = GlobalKey<FormState>();
 
     return Scaffold(

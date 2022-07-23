@@ -5,7 +5,7 @@ import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
 
 import '../../widgets/delete_dialog.dart';
 import '../../../model/entities/material.dart';
-import '../../../model/use_cases/material_controller.dart';
+import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/use_cases/record_controller.dart';
 import 'edit_material_page.dart';
 import '../../widgets/show_indicator.dart';

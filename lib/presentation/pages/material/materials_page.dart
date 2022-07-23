@@ -8,7 +8,7 @@ import '../../widgets/material_item.dart';
 import 'edit_material_page.dart';
 import '../../custom_hooks/use_effect_once.dart';
 import '../../../extensions/exception_extension.dart';
-import '../../../model/use_cases/material_controller.dart';
+import '../../../model/use_cases/material/material_controller.dart';
 
 class MaterialsPage extends HookConsumerWidget {
   const MaterialsPage({Key? key}) : super(key: key);
