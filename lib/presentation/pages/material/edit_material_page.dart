@@ -17,14 +17,14 @@ import '../../widgets/sheets/show_photo_and_crop_bottom_sheet.dart';
 import '../../../utils/logger.dart';
 
 class EditMaterialPage extends HookConsumerWidget {
-  const EditMaterialPage({Key? key, this.data}) : super(key: key);
+  const EditMaterialPage({Key? key, this.material}) : super(key: key);
 
-  final MaterialData? data;
+  final MaterialData? material;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
-    final titleEditingController = useTextEditingController(text: data?.title);
+    final titleEditingController = useTextEditingController(text: material?.title);
     final form = GlobalKey<FormState>();
 
     return Scaffold(
@@ -53,7 +53,7 @@ class EditMaterialPage extends HookConsumerWidget {
               }
               try {
                 showIndicator(context);
-                await ref.read(saveMaterialImageProvider).call(data!.id, compressImage);
+                await ref.read(saveMaterialImageProvider).call(material!.id, compressImage);
               } on Exception catch (e) {
                 logger.shout(e);
                 await showOkAlertDialog(
@@ -67,9 +67,9 @@ class EditMaterialPage extends HookConsumerWidget {
               child: Thumbnail(
                 height: mediaQuery.size.height * 0.3,
                 width: mediaQuery.size.width * 0.4,
-                url: data?.image?.url,
+                url: material?.image?.url,
                 onTap: () {
-                  final url = data?.image?.url;
+                  final url = material?.image?.url;
                   if (url != null) {
                     ImageViewer.show(
                       context,
@@ -100,11 +100,11 @@ class EditMaterialPage extends HookConsumerWidget {
                     return;
                   }
                   showIndicator(context);
-                  if (data != null) {
+                  if (material != null) {
                     final result = await ref
                         .read(materialDataProvider.notifier)
                         .update(
-                            data!.copyWith(title: titleEditingController.text));
+                            material!.copyWith(title: titleEditingController.text));
                     result.when(
                       success: () {},
                       failure: (e) {

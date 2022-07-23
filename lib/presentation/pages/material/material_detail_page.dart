@@ -13,10 +13,10 @@ import '../../widgets/show_indicator.dart';
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
     Key? key,
-    required this.data,
+    required this.material,
   }) : super(key: key);
 
-  final MaterialData data;
+  final MaterialData material;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +24,7 @@ class MaterialDetailPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          data.title,
+          material.title,
           softWrap: true,
         ),
         actions: [
@@ -33,7 +33,7 @@ class MaterialDetailPage extends HookConsumerWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return EditMaterialPage(
-                  data: data,
+                  material: material,
                 );
               }));
             },
@@ -53,18 +53,18 @@ class MaterialDetailPage extends HookConsumerWidget {
                       Thumbnail(
                         height: mediaQuery.size.height * 0.3,
                         width: mediaQuery.size.width * 0.4,
-                        url: data.image?.url,
+                        url: material.image?.url,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 20),
                         child: Text(
-                          data.title,
+                          material.title,
                           style: const TextStyle(
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text('登録日：${data.dateLabel}'),
+                      Text('登録日：${material.dateLabel}'),
                     ],
                   ),
                 ),
@@ -74,16 +74,16 @@ class MaterialDetailPage extends HookConsumerWidget {
                       context: context,
                       builder: (_) {
                         return DeleteDialog(
-                          title: '「${data.title}」を削除してよろしいですか？',
-                          content: '${data.title}による学習記録は全て削除されます。',
+                          title: '「${material.title}」を削除してよろしいですか？',
+                          content: '${material.title}による学習記録は全て削除されます。',
                           deleteHandle: () {
                             showIndicator(context);
                             ref
                                 .watch(materialDataProvider.notifier)
-                                .remove(data.id);
+                                .remove(material.id);
                             ref
                                 .watch(recordProvider.notifier)
-                                .removeByMaterialId(data.id);
+                                .removeByMaterialId(material.id);
                             dismissIndicator(context);
                             Navigator.of(context)
                                 .popUntil((route) => route.isFirst);
