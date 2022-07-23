@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import './thumbnail.dart';
 import '../../model/entities/material.dart';
-import '../pages/material_detail_page.dart';
+import '../pages/material/material_detail_page.dart';
+import '../pages/image_viewer/image_viewer.dart';
 
 class MaterialItem extends StatelessWidget {
   const MaterialItem({Key? key, required this.material}) : super(key: key);
@@ -28,19 +30,10 @@ class MaterialItem extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           child: Row(
             children: [
-              Container(
+              Thumbnail(
                 height: double.infinity,
                 width: 100,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(width: 1, color: Colors.grey),
-                ),
-                child: material.image == null
-                    ? const Icon(
-                        Icons.image,
-                      )
-                    : const Icon(Icons.image),
+                url: material.image?.url,
               ),
               const SizedBox(width: 10),
               Column(

@@ -23,15 +23,15 @@ class SignInWithEmailAndPassword {
       await repository.signInWithEmailAndPassword(email, password);
 
       final user = _read(firebaseAuthRepositoryProvider).authUser;
-      if (user != null && user.emailVerified) {
+      if (user != null) {
         authState.update((state) => AuthState.signIn);
       } else {
         authState.update((state) => AuthState.noSignIn);
       }
 
-      print('Emailサインインに成功しました');
+      logger.info('Emailサインインに成功しました');
     } on FirebaseAuthException catch (e) {
-      print(e);
+      logger.shout(e);
 
       if (e.code == AuthErrorCode.invalidEmail.value ||
           e.code == AuthErrorCode.wrongPassword.value ||

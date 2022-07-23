@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../model/use_cases/material_controller.dart';
-import '../../model/entities/record.dart';
-import '../widgets/delete_dialog.dart';
-import '../../model/use_cases/record_controller.dart';
+import '../../../model/use_cases/material/material_controller.dart';
+import '../../../model/entities/record.dart';
+import '../../widgets/delete_dialog.dart';
+import '../../../model/use_cases/record_controller.dart';
 import './edit_record_page.dart';
-import '../widgets/show_indicator.dart';
+import '../../widgets/show_indicator.dart';
 
 class RecordDetailPage extends HookConsumerWidget {
   const RecordDetailPage({

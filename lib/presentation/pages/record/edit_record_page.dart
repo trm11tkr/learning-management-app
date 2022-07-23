@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../model/use_cases/record_controller.dart';
-import '../../model/use_cases/material_controller.dart';
-import '../../model/entities/record.dart';
-import '../pages/edit_material_page.dart';
-import '../../extensions/exception_extension.dart';
-import '../widgets/show_indicator.dart';
+import '../../../model/use_cases/record_controller.dart';
+import '../../../model/use_cases/material/material_controller.dart';
+import '../../../model/entities/record.dart';
+import '../material/edit_material_page.dart';
+import '../../../extensions/exception_extension.dart';
+import '../../widgets/show_indicator.dart';
 
 final _key = GlobalKey<FormState>();
 
@@ -195,7 +196,7 @@ class EditRecordPage extends HookConsumerWidget {
                         result.when(
                           success: () {},
                           failure: (e) {
-                            print(e.errorMessage);
+                            showOkAlertDialog(context: context, title: e.errorMessage);
                           },
                         );
                       } else {

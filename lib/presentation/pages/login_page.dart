@@ -111,7 +111,7 @@ class LoginPage extends HookConsumerWidget {
                             return const TabsPage();
                           }));
                         } on Exception catch (e) {
-                          print(e);
+                          logger.shout(e);
                           dismissIndicator(context);
                           context.showSnackBar(e.toString());
                         }

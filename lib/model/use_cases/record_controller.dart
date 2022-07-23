@@ -63,7 +63,6 @@ class RecordController extends StateNotifier<List<Record>> {
         },
       );
       state = data.map((e) => e.entity).whereType<Record>().toList();
-      print('state : $state');
       return const ResultVoidData.success();
     } on AppException catch (e) {
       logger.shout(e);
