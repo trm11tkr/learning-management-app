@@ -95,169 +95,171 @@ class EditMyPage extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('プロフィール変更'),
       ),
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () async {
-              final ImagePicker picker = ImagePicker();
-              final selectedImage = await showPhotoAndCropBottomSheet(
-                context,
-                title: 'プロフィール画像',
-              );
-              if (selectedImage == null) {
-                return;
-              }
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () async {
+                final ImagePicker picker = ImagePicker();
+                final selectedImage = await showPhotoAndCropBottomSheet(
+                  context,
+                  title: 'プロフィール画像',
+                );
+                if (selectedImage == null) {
+                  return;
+                }
 
-              // 圧縮して設定
-              final compressImage =
-                  await ref.read(imageCompressProvider)(selectedImage);
-              if (compressImage == null) {
-                return;
-              }
-              showImageState.value = selectedImage;
-              uint8ListState.value = compressImage;
-            },
-            child: Stack(
-              alignment: Alignment.center,
+                // 圧縮して設定
+                final compressImage =
+                    await ref.read(imageCompressProvider)(selectedImage);
+                if (compressImage == null) {
+                  return;
+                }
+                showImageState.value = selectedImage;
+                uint8ListState.value = compressImage;
+              },
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    foregroundDecoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      shape: BoxShape.circle,
+                    ),
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: CircleThumbnail(
+                      fit: BoxFit.cover,
+                      url: showImageState.value == null
+                          ? profile?.image?.url
+                          : null,
+                      file: showImageState.value,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.add_photo_alternate,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // 入力フォーム
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  foregroundDecoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    shape: BoxShape.circle,
-                  ),
-                  height: 200,
-                  width: 200,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: CircleThumbnail(
-                    fit: BoxFit.cover,
-                    url: showImageState.value == null
-                        ? profile?.image?.url
-                        : null,
-                    file: showImageState.value,
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child:
+                      Text('名前', style: Theme.of(context).textTheme.bodyMedium),
                 ),
-                const Icon(
-                  Icons.add_photo_alternate,
-                  color: Colors.white,
-                  size: 50,
+                TextFormField(
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  decoration: const InputDecoration(
+                    hintText: '名前を入力してください',
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    border: OutlineInputBorder(),
+                    isDense: true,
+                    counterText: '',
+                  ),
+                  key: nameFormKey,
+                  initialValue: profile?.name,
+                  validator: (value) => (value == null || value.trim().isEmpty)
+                      ? '名前を入力してください'
+                      : null,
+                  maxLength: 32,
+                ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text('目標学習時間',
+                      style: Theme.of(context).textTheme.bodyMedium),
+                ),
+                TextFormField(
+                  textAlign: TextAlign.end,
+                  initialValue: '${profile?.targetTime}分',
+                  decoration: const InputDecoration(label: Text('学習時間')),
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    final settingValues = [
+                      '15',
+                      '30',
+                      '60',
+                      '90',
+                      '120',
+                      '150',
+                      '180',
+                      '210',
+                      '240',
+                      '300'
+                    ];
+                    showPicker(
+                      pickerItems:
+                          settingValues.map((value) => '$value分').toList(),
+                      settingValues: settingValues,
+                    );
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '学習時間を選択してください。';
+                    }
+                    return null;
+                  },
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 8),
 
-          // 入力フォーム
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child:
-                    Text('名前', style: Theme.of(context).textTheme.bodyMedium),
-              ),
-              TextFormField(
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: const InputDecoration(
-                  hintText: '名前を入力してください',
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                  counterText: '',
-                ),
-                key: nameFormKey,
-                initialValue: profile?.name,
-                validator: (value) => (value == null || value.trim().isEmpty)
-                    ? '名前を入力してください'
-                    : null,
-                maxLength: 32,
-              ),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: Text('目標学習時間',
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ),
-              TextFormField(
-                textAlign: TextAlign.end,
-                initialValue: '${profile?.targetTime}分',
-                decoration: const InputDecoration(label: Text('学習時間')),
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  final settingValues = [
-                    '15',
-                    '30',
-                    '60',
-                    '90',
-                    '120',
-                    '150',
-                    '180',
-                    '210',
-                    '240',
-                    '300'
-                  ];
-                  showPicker(
-                    pickerItems:
-                        settingValues.map((value) => '$value分').toList(),
-                    settingValues: settingValues,
-                  );
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '学習時間を選択してください。';
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: RoundedButton(
+                elevation: 2,
+                onTap: () async {
+                  context.hideKeyboard();
+                  if (!nameFormKey.currentState!.validate()) {
+                    return;
                   }
-                  return null;
-                },
-              ),
-            ],
-          ),
-
-          Padding(
-            padding: const EdgeInsets.only(top: 40),
-            child: RoundedButton(
-              elevation: 2,
-              onTap: () async {
-                context.hideKeyboard();
-                if (!nameFormKey.currentState!.validate()) {
-                  return;
-                }
-                final name = nameFormKey.currentState?.value?.trim() ?? '';
-                final targetTime = targetTimeState.value;
-                try {
-                  showIndicator(context);
-                  await ref.read(saveMyProfileProvider).call(
-                        name: name,
-                        targetTime: targetTime,
-                      );
-                  if (uint8ListState.value != null) {
-                    await ref
-                        .read(saveMyProfileImageProvider)
-                        .call(uint8ListState.value!);
+                  final name = nameFormKey.currentState?.value?.trim() ?? '';
+                  final targetTime = targetTimeState.value;
+                  try {
+                    showIndicator(context);
+                    await ref.read(saveMyProfileProvider).call(
+                          name: name,
+                          targetTime: targetTime,
+                        );
+                    if (uint8ListState.value != null) {
+                      await ref
+                          .read(saveMyProfileImageProvider)
+                          .call(uint8ListState.value!);
+                    }
+                    dismissIndicator(context);
+                    context.showSnackBar('保存しました');
+                    Navigator.of(context).pop();
+                  } on Exception catch (e) {
+                    logger.shout(e);
+                    dismissIndicator(context);
+                    await showOkAlertDialog(
+                        context: context, title: '保存できませんでした');
                   }
-                  dismissIndicator(context);
-                  context.showSnackBar('保存しました');
-                  Navigator.of(context).pop();
-                } on Exception catch (e) {
-                  logger.shout(e);
-                  dismissIndicator(context);
-                  await showOkAlertDialog(
-                      context: context, title: '保存できませんでした');
-                }
-              },
-              color: Theme.of(context).colorScheme.primary,
-              child: const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                child: Text(
-                  '保存する',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                },
+                color: Theme.of(context).colorScheme.primary,
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  child: Text(
+                    '保存する',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
