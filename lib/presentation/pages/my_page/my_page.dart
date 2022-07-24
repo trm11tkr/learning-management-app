@@ -49,7 +49,7 @@ class MyPage extends HookConsumerWidget {
                   child: const Text('編集')),
               const SizedBox(height: 20),
               Text(
-                profile?.name ?? '田中',
+                profile?.name ?? '-',
                 style: const TextStyle(
                     fontSize: 30, overflow: TextOverflow.ellipsis),
               ),
