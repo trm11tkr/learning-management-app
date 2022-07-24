@@ -111,7 +111,7 @@ class EditMaterialPage extends HookConsumerWidget {
                             .copyWith(title: titleEditingController.text));
                     result.when(
                       success: () {
-                        logger.info('Recordを無事に更新');
+                        logger.info('Materialを無事に更新');
                       },
                       failure: (e) {
                         showOkAlertDialog(
@@ -124,7 +124,7 @@ class EditMaterialPage extends HookConsumerWidget {
                         .create(title: titleEditingController.text);
                     result.when(
                       success: (materialId) {
-                        logger.info('Recordを無事に作成');
+                        logger.info('Materialを無事に作成');
                         materialIdState.value = materialId;
                         context.showSnackBar('更新しました');
                       },
