@@ -1,22 +1,24 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
 
-import '../../widgets/delete_dialog.dart';
+import '../../widgets/thumbnail.dart';
 import '../../../model/entities/material.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/use_cases/record_controller.dart';
 import 'edit_material_page.dart';
 import '../../widgets/show_indicator.dart';
+import '../../../extensions/context_extension.dart';
+import '../../../extensions/exception_extension.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
     Key? key,
-    required this.data,
+    required this.material,
   }) : super(key: key);
 
-  final MaterialData data;
+  final MaterialData material;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +26,7 @@ class MaterialDetailPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          data.title,
+          material.title,
           softWrap: true,
         ),
         actions: [
@@ -33,7 +35,7 @@ class MaterialDetailPage extends HookConsumerWidget {
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) {
                 return EditMaterialPage(
-                  data: data,
+                  material: material,
                 );
               }));
             },
@@ -53,44 +55,57 @@ class MaterialDetailPage extends HookConsumerWidget {
                       Thumbnail(
                         height: mediaQuery.size.height * 0.3,
                         width: mediaQuery.size.width * 0.4,
-                        url: data.image?.url,
+                        url: material.image?.url,
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 20),
                         child: Text(
-                          data.title,
+                          material.title,
                           style: const TextStyle(
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Text('登録日：${data.dateLabel}'),
+                      Text('登録日：${material.dateLabel}'),
                     ],
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return DeleteDialog(
-                          title: '「${data.title}」を削除してよろしいですか？',
-                          content: '${data.title}による学習記録は全て削除されます。',
-                          deleteHandle: () {
-                            showIndicator(context);
-                            ref
-                                .watch(materialDataProvider.notifier)
-                                .remove(data.id);
-                            ref
-                                .watch(recordProvider.notifier)
-                                .removeByMaterialId(data.id);
-                            dismissIndicator(context);
-                            Navigator.of(context)
-                                .popUntil((route) => route.isFirst);
-                          },
-                        );
-                      },
-                    );
+                  onPressed: () async {
+                    final alertResult = await showOkCancelAlertDialog(
+                        context: context,
+                        title: '「${material.title}」を削除してよろしいですか？',
+                        message: '${material.title}による学習記録は全て削除されます。');
+
+                    if (alertResult == OkCancelResult.cancel) {
+                      return;
+                    }
+                    showIndicator(context);
+                    final recordDeleteResult = await ref
+                        .watch(materialDataProvider.notifier)
+                        .remove(material.id);
+
+                    recordDeleteResult.when(
+                        success: () {},
+                        failure: (e) {
+                          context.showSnackBar(
+                            e.errorMessage,
+                          );
+                        });
+
+                    final materialDeleteResult = await ref
+                        .watch(recordProvider.notifier)
+                        .removeByMaterialId(material.id);
+
+                    materialDeleteResult.when(success: () {
+                      context.showSnackBar('削除しました');
+                    }, failure: (e) {
+                      context.showSnackBar(
+                        e.errorMessage,
+                      );
+                    });
+                    dismissIndicator(context);
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                   child: Text(
                     '削除',

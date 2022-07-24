@@ -14,6 +14,13 @@ final customLightThemeData = ThemeData.light().copyWith(
     iconTheme: const IconThemeData(
       color: Color(0xFF444444),
     ),
+    dialogTheme: const DialogTheme(
+      titleTextStyle: TextStyle(
+        color: Color(0xFF444444),
+      ),
+      contentTextStyle: TextStyle(
+        color: Color(0xFF777777),
+      )),
     textTheme: const TextTheme(
       bodyMedium: TextStyle(
         color: Color(0xFF444444),
@@ -51,6 +58,13 @@ final customDarkThemeData = ThemeData.dark().copyWith(
   iconTheme: const IconThemeData(
     color: Color(0xFFE6E6E6),
   ),
+  dialogTheme: const DialogTheme(
+      titleTextStyle: TextStyle(
+        color: Color(0xFFE6E6E6),
+      ),
+      contentTextStyle: TextStyle(
+        color: Color(0xFFC0C0C0),
+      ),),
   textTheme: const TextTheme(
     bodyMedium: TextStyle(
       color: Color(0xFFE6E6E6),

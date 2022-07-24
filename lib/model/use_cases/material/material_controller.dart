@@ -9,6 +9,7 @@ import '../../repositories/firebase_auth/firebase_auth_repository.dart';
 import '../../repositories/firestore/document.dart';
 import '../../repositories/firestore/document_repository.dart';
 import '../../../results/result_void_data.dart';
+import '../../../results/result_data.dart';
 
 final materialDataProvider =
     StateNotifierProvider<MaterialDataController, List<MaterialData>>((ref) {
@@ -98,7 +99,9 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
   }
 
   /// 作成
-  Future<ResultVoidData> create(String title) async {
+  Future<ResultData> create({
+    required String title,
+  }) async {
     try {
       final userId = _firebaseAuthRepository.loggedInUserId;
       if (userId == null) {
@@ -110,13 +113,13 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
       await _documentRepository.save(MaterialData.docPath(userId, ref.id),
           data: data.toDocWithNotImage);
       state = [data, ...state];
-      return const ResultVoidData.success();
+      return ResultData.success(ref.id);
     } on AppException catch (e) {
       logger.shout(e);
-      return ResultVoidData.failure(e);
+      return ResultData.failure(e);
     } on Exception catch (e) {
       logger.shout(e);
-      return ResultVoidData.failure(AppException.error(e.errorMessage));
+      return ResultData.failure(AppException.error(e.errorMessage));
     }
   }
 
@@ -181,7 +184,7 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
     return state.firstWhere((material) => material.id == materialId);
   }
 
-   // タイトルから検索（後から変更）
+  // タイトルから検索（後から変更）
   MaterialData getByTitle(String title) {
     return state.firstWhere((material) => material.title == title);
   }

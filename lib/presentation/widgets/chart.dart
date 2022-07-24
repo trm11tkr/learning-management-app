@@ -49,9 +49,11 @@ class Chart extends StatelessWidget {
                 child: ChartBar(
                     label: record['day'],
                     spendingAmount: record['amount'],
-                    spendingPctOfTotal: record['amount'] / targetDayTime >= 1.0
-                        ? 1.0
-                        : record['amount'] / targetDayTime),
+                    spendingPctOfTotal: targetDayTime == 0
+                        ? 0
+                        : record['amount'] / targetDayTime >= 1.0
+                            ? 1.0
+                            : record['amount'] / targetDayTime),
               );
             },
           ).toList(),
