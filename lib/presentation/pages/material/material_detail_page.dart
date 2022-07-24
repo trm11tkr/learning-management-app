@@ -22,7 +22,6 @@ class MaterialDetailPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(materialDataProvider);
     final mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -75,7 +74,6 @@ class MaterialDetailPage extends HookConsumerWidget {
                   onPressed: () async {
                     final alertResult = await showOkCancelAlertDialog(
                         context: context,
-                        
                         title: '「${material.title}」を削除してよろしいですか？',
                         message: '${material.title}による学習記録は全て削除されます。');
 

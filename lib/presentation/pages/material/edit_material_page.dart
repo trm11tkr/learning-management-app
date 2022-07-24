@@ -73,15 +73,30 @@ class EditMaterialPage extends HookConsumerWidget {
                 showImageState.value = selectedImage;
                 uint8ListState.value = compressImage;
               },
-              child: showImageState.value == null
-                  ? Thumbnail(
-                      height: mediaQuery.size.height * 0.3,
-                      width: mediaQuery.size.width * 0.4,
-                      url: material?.image?.url)
-                  : Thumbnail(
-                      height: mediaQuery.size.height * 0.3,
-                      width: mediaQuery.size.width * 0.4,
-                      file: showImageState.value),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    foregroundDecoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                    height: mediaQuery.size.height * 0.3,
+                    width: mediaQuery.size.width * 0.4,
+                    child: Thumbnail(
+                      fit: BoxFit.cover,
+                      url: showImageState.value == null
+                          ? material?.image?.url
+                          : null,
+                      file: showImageState.value,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.add_photo_alternate,
+                    color: Colors.white,
+                    size: 50,
+                  ),
+                ],
+              ),
             ),
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
               Form(
@@ -126,7 +141,7 @@ class EditMaterialPage extends HookConsumerWidget {
                       success: (materialId) {
                         logger.info('Materialを無事に作成');
                         materialIdState.value = materialId;
-                        context.showSnackBar('更新しました');
+                        context.showSnackBar('作成しました');
                       },
                       failure: (e) {
                         showOkAlertDialog(

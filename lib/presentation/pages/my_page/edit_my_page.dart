@@ -98,28 +98,52 @@ class EditMyPage extends HookConsumerWidget {
       body: Column(
         children: [
           GestureDetector(
-              onTap: () async {
-                final ImagePicker picker = ImagePicker();
-                final selectedImage = await showPhotoAndCropBottomSheet(
-                  context,
-                  title: 'プロフィール画像',
-                );
-                if (selectedImage == null) {
-                  return;
-                }
+            onTap: () async {
+              final ImagePicker picker = ImagePicker();
+              final selectedImage = await showPhotoAndCropBottomSheet(
+                context,
+                title: 'プロフィール画像',
+              );
+              if (selectedImage == null) {
+                return;
+              }
 
-                // 圧縮して設定
-                final compressImage =
-                    await ref.read(imageCompressProvider)(selectedImage);
-                if (compressImage == null) {
-                  return;
-                }
-                showImageState.value = selectedImage;
-                uint8ListState.value = compressImage;
-              },
-              child: showImageState.value == null
-                  ? CircleThumbnail(size: 96, url: profile?.image?.url)
-                  : CircleThumbnail(size: 96, file: showImageState.value)),
+              // 圧縮して設定
+              final compressImage =
+                  await ref.read(imageCompressProvider)(selectedImage);
+              if (compressImage == null) {
+                return;
+              }
+              showImageState.value = selectedImage;
+              uint8ListState.value = compressImage;
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  foregroundDecoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  height: 200,
+                  width: 200,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: CircleThumbnail(
+                    fit: BoxFit.cover,
+                    url: showImageState.value == null
+                        ? profile?.image?.url
+                        : null,
+                    file: showImageState.value,
+                  ),
+                ),
+                const Icon(
+                  Icons.add_photo_alternate,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ],
+            ),
+          ),
           const SizedBox(height: 8),
 
           // 入力フォーム
@@ -158,7 +182,6 @@ class EditMyPage extends HookConsumerWidget {
                 textAlign: TextAlign.end,
                 initialValue: '${profile?.targetTime}分',
                 decoration: const InputDecoration(label: Text('学習時間')),
-                
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   final settingValues = [
