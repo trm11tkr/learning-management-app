@@ -100,7 +100,6 @@ class EditMyPage extends HookConsumerWidget {
           children: [
             GestureDetector(
               onTap: () async {
-                final ImagePicker picker = ImagePicker();
                 final selectedImage = await showPhotoAndCropBottomSheet(
                   context,
                   title: 'プロフィール画像',
