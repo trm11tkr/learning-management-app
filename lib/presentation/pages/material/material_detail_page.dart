@@ -1,15 +1,16 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:learning_management_app/presentation/widgets/thumbnail.dart';
-import 'package:learning_management_app/utils/logger.dart';
 
-import '../../widgets/delete_dialog.dart';
+import '../../widgets/thumbnail.dart';
 import '../../../model/entities/material.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/use_cases/record_controller.dart';
 import 'edit_material_page.dart';
 import '../../widgets/show_indicator.dart';
+import '../../../extensions/context_extension.dart';
+import '../../../extensions/exception_extension.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({
@@ -71,28 +72,42 @@ class MaterialDetailPage extends HookConsumerWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return DeleteDialog(
-                          title: '「${material.title}」を削除してよろしいですか？',
-                          content: '${material.title}による学習記録は全て削除されます。',
-                          deleteHandle: () {
-                            showIndicator(context);
-                            ref
-                                .watch(materialDataProvider.notifier)
-                                .remove(material.id);
-                            ref
-                                .watch(recordProvider.notifier)
-                                .removeByMaterialId(material.id);
-                            dismissIndicator(context);
-                            Navigator.of(context)
-                                .popUntil((route) => route.isFirst);
-                          },
-                        );
-                      },
-                    );
+                  onPressed: () async {
+                    final alertResult = await showOkCancelAlertDialog(
+                        context: context,
+                        
+                        title: '「${material.title}」を削除してよろしいですか？',
+                        message: '${material.title}による学習記録は全て削除されます。');
+
+                    if (alertResult == OkCancelResult.cancel) {
+                      return;
+                    }
+                    showIndicator(context);
+                    final recordDeleteResult = await ref
+                        .watch(materialDataProvider.notifier)
+                        .remove(material.id);
+
+                    recordDeleteResult.when(
+                        success: () {},
+                        failure: (e) {
+                          context.showSnackBar(
+                            e.errorMessage,
+                          );
+                        });
+
+                    final materialDeleteResult = await ref
+                        .watch(recordProvider.notifier)
+                        .removeByMaterialId(material.id);
+
+                    materialDeleteResult.when(success: () {
+                      context.showSnackBar('削除しました');
+                    }, failure: (e) {
+                      context.showSnackBar(
+                        e.errorMessage,
+                      );
+                    });
+                    dismissIndicator(context);
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                   },
                   child: Text(
                     '削除',

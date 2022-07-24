@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
-import '../../widgets/delete_dialog.dart';
 import '../../../model/use_cases/record_controller.dart';
 import './edit_record_page.dart';
 import '../../widgets/show_indicator.dart';
+import '../../../extensions/context_extension.dart';
+import '../../../extensions/exception_extension.dart';
 
 class RecordDetailPage extends HookConsumerWidget {
   const RecordDetailPage({
@@ -80,32 +82,42 @@ class RecordDetailPage extends HookConsumerWidget {
                             ),
                             data == null
                                 ? const SizedBox()
-                                : Text(
-                                    '登録日：${data?.dateLabel}'),
+                                : Text('登録日：${data?.dateLabel}'),
                             Text(data?.description ?? ''),
                           ],
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
-                          showDialog(
+                        onPressed: () async {
+                          final alertResult = await showOkCancelAlertDialog(
                             context: context,
-                            builder: (_) {
-                              return DeleteDialog(
-                                title: '学習記録を削除してよろしいですか？',
-                                content: 'このアクションは取り消せません。',
-                                deleteHandle: () {
-                                  showIndicator(context);
-                                  ref
-                                      .watch(recordProvider.notifier)
-                                      .remove(data!.id);
-                                  dismissIndicator(context);
-                                  Navigator.of(context)
-                                      .popUntil((route) => route.isFirst);
-                                },
-                              );
-                            },
+                            title: 'この学習記録を削除してよろしいですか？',
+                          
                           );
+
+                          if (alertResult == OkCancelResult.cancel) {
+                            return;
+                          }
+                          showIndicator(context);
+
+                          if (data == null) {
+                            return;
+                          }
+                          final result = await await ref
+                              .watch(recordProvider.notifier)
+                              .remove(data!.id);
+
+                          result.when(success: () {
+                            context.showSnackBar('削除しました');
+                          }, failure: (e) {
+                            context.showSnackBar(
+                              e.errorMessage,
+                            );
+                          });
+
+                          dismissIndicator(context);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                         },
                         child: Text(
                           '削除',
