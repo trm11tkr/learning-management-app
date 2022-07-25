@@ -10,9 +10,11 @@ import '../../repositories/firestore/document.dart';
 import '../../repositories/firestore/document_repository.dart';
 import '../../../results/result_void_data.dart';
 import '../../../results/result_data.dart';
+import '../../../utils/provider.dart';
 
 final materialDataProvider =
     StateNotifierProvider<MaterialDataController, List<MaterialData>>((ref) {
+  ref.watch(authStateProvider);
   return MaterialDataController(ref.read);
 });
 

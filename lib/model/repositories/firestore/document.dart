@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 typedef SnapType = Map<String, dynamic>;
 
 @immutable
-class Document<T extends dynamic> {
+class Document<T extends Object> {
   const Document({
     required this.ref,
     required this.exists,
