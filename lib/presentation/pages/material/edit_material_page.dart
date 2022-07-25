@@ -52,117 +52,120 @@ class EditMaterialPage extends HookConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () async {
-                final selectedImage = await showPhotoAndCropBottomSheet(
-                  context,
-                  title: 'サムネイル',
-                );
-                if (selectedImage == null) {
-                  return;
-                }
-                // 圧縮して設定
-                final compressImage =
-                    await ref.read(imageCompressProvider)(selectedImage);
-                if (compressImage == null) {
-                  return;
-                }
-                showImageState.value = selectedImage;
-                uint8ListState.value = compressImage;
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    foregroundDecoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                    height: mediaQuery.size.height * 0.3,
-                    width: mediaQuery.size.width * 0.4,
-                    child: Thumbnail(
-                      fit: BoxFit.cover,
-                      url: showImageState.value == null
-                          ? material?.image?.url
-                          : null,
-                      file: showImageState.value,
-                    ),
-                  ),
-                  const Icon(
-                    Icons.add_photo_alternate,
-                    color: Colors.white,
-                    size: 50,
-                  ),
-                ],
-              ),
-            ),
-            Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              Form(
-                child: TextFormField(
-                  controller: titleEditingController,
-                  decoration: const InputDecoration(
-                    labelText: 'タイトル',
-                    hintText: 'TOEIC 出る単特急 金のフレーズ',
-                    isDense: true,
-                  ),
-                  key: titleFormKey,
-                  validator: (value) => (value == null || value.trim().isEmpty)
-                      ? 'タイトル正しく入力してください'
-                      : null,
-                ),
-              ),
-              TextButton(
-                onPressed: () async {
-                  if (titleFormKey.currentState?.validate() != true) {
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  final selectedImage = await showPhotoAndCropBottomSheet(
+                    context,
+                    title: 'サムネイル',
+                  );
+                  if (selectedImage == null) {
                     return;
                   }
-                  showIndicator(context);
-                  if (material != null) {
-                    final result = await ref
-                        .read(materialDataProvider.notifier)
-                        .update(material!
-                            .copyWith(title: titleEditingController.text));
-                    result.when(
-                      success: () {
-                        logger.info('Materialを無事に更新');
-                      },
-                      failure: (e) {
-                        showOkAlertDialog(
-                            context: context, title: e.errorMessage);
-                      },
-                    );
-                  } else {
-                    final result = await ref
-                        .read(materialDataProvider.notifier)
-                        .create(title: titleEditingController.text);
-                    result.when(
-                      success: (materialId) {
-                        logger.info('Materialを無事に作成');
-                        materialIdState.value = materialId;
-                        context.showSnackBar('作成しました');
-                      },
-                      failure: (e) {
-                        showOkAlertDialog(
-                            context: context, title: e.errorMessage);
-                      },
-                    );
+                  // 圧縮して設定
+                  final compressImage =
+                      await ref.read(imageCompressProvider)(selectedImage);
+                  if (compressImage == null) {
+                    return;
                   }
-
-                  if (materialIdState.value != null &&
-                      uint8ListState.value != null) {
-                    await ref
-                        .read(saveMaterialImageProvider)
-                        .call(materialIdState.value!, uint8ListState.value!);
-                  }
-                  dismissIndicator(context);
-                  Navigator.of(context).pop();
+                  showImageState.value = selectedImage;
+                  uint8ListState.value = compressImage;
                 },
-                child: const Text('登録'),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                      foregroundDecoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                      height: mediaQuery.size.height * 0.3,
+                      width: mediaQuery.size.width * 0.4,
+                      child: Thumbnail(
+                        fit: BoxFit.cover,
+                        url: showImageState.value == null
+                            ? material?.image?.url
+                            : null,
+                        file: showImageState.value,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                      size: 50,
+                    ),
+                  ],
+                ),
               ),
-            ]),
-          ],
+              Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                Form(
+                  child: TextFormField(
+                    controller: titleEditingController,
+                    decoration: const InputDecoration(
+                      labelText: 'タイトル',
+                      hintText: 'TOEIC 出る単特急 金のフレーズ',
+                      isDense: true,
+                    ),
+                    key: titleFormKey,
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
+                            ? 'タイトル正しく入力してください'
+                            : null,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (titleFormKey.currentState?.validate() != true) {
+                      return;
+                    }
+                    showIndicator(context);
+                    if (material != null) {
+                      final result = await ref
+                          .read(materialDataProvider.notifier)
+                          .update(material!
+                              .copyWith(title: titleEditingController.text));
+                      result.when(
+                        success: () {
+                          logger.info('Materialを無事に更新');
+                        },
+                        failure: (e) {
+                          showOkAlertDialog(
+                              context: context, title: e.errorMessage);
+                        },
+                      );
+                    } else {
+                      final result = await ref
+                          .read(materialDataProvider.notifier)
+                          .create(title: titleEditingController.text);
+                      result.when(
+                        success: (materialId) {
+                          logger.info('Materialを無事に作成');
+                          materialIdState.value = materialId;
+                          context.showSnackBar('作成しました');
+                        },
+                        failure: (e) {
+                          showOkAlertDialog(
+                              context: context, title: e.errorMessage);
+                        },
+                      );
+                    }
+
+                    if (materialIdState.value != null &&
+                        uint8ListState.value != null) {
+                      await ref
+                          .read(saveMaterialImageProvider)
+                          .call(materialIdState.value!, uint8ListState.value!);
+                    }
+                    dismissIndicator(context);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('登録'),
+                ),
+              ]),
+            ],
+          ),
         ),
       ),
     );
