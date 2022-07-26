@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../extensions/int_extension.dart';
+import '../../../model/use_cases/auth/sign_out.dart';
+import '../../../model/use_cases/my_profile/fetch_my_profile.dart';
+import '../image_viewer/image_viewer.dart';
 import './edit_my_page.dart';
 import '../login_page.dart';
-import '../../../model/use_cases/my_profile/fetch_my_profile.dart';
 import '../../widgets/thumbnail.dart';
-import '../image_viewer/image_viewer.dart';
-import '../../../model/use_cases/auth/sign_out.dart';
-import '../../../extensions/int_extension.dart';
+
 
 class MyPage extends HookConsumerWidget {
   const MyPage({Key? key}) : super(key: key);

@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:learning_management_app/utils/logger.dart';
 
+import '../../../extensions/int_extension.dart';
+import '../../../extensions/exception_extension.dart';
 import '../../../model/use_cases/record_controller.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
 import '../material/edit_material_page.dart';
-import '../../../extensions/exception_extension.dart';
 import '../../widgets/show_indicator.dart';
 import '../../widgets/show_picker.dart';
-import '../../../extensions/int_extension.dart';
 
 final _key = GlobalKey<FormState>();
 

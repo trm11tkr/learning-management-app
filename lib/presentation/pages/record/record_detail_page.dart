@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
+import '../../../extensions/context_extension.dart';
+import '../../../extensions/exception_extension.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
 import '../../../model/use_cases/record_controller.dart';
 import './edit_record_page.dart';
 import '../../widgets/show_indicator.dart';
-import '../../../extensions/context_extension.dart';
-import '../../../extensions/exception_extension.dart';
 
 class RecordDetailPage extends HookConsumerWidget {
   const RecordDetailPage({
