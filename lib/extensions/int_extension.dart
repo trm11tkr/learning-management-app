@@ -7,7 +7,7 @@ extension IntExtension on int {
     } else if (m == 0) {
       return '$h時間';
     } else {
-      return '$h時間：$m分';
+      return '$h時間$m分';
     }
   }
 }

@@ -11,6 +11,7 @@ import '../../../model/use_cases/my_profile/fetch_my_profile.dart';
 import '../../widgets/thumbnail.dart';
 import '../image_viewer/image_viewer.dart';
 import '../../../model/use_cases/auth/sign_out.dart';
+import '../../../extensions/int_extension.dart';
 
 class MyPage extends HookConsumerWidget {
   const MyPage({Key? key}) : super(key: key);
@@ -54,7 +55,8 @@ class MyPage extends HookConsumerWidget {
                   style: const TextStyle(
                       fontSize: 30, overflow: TextOverflow.ellipsis),
                 ),
-                Text('目標学習時間(分/日)：${profile?.targetTime ?? "60"}分',
+                Text(
+                    '目標学習時間(分/日)：${profile?.targetTime?.toHMString() ?? "60分"}',
                     style: Theme.of(context).textTheme.bodyMedium),
                 Text('学習教材数：${profile?.numOfMaterials ?? "0"}',
                     style: Theme.of(context).textTheme.bodyMedium),
