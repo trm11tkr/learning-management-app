@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../utils/logger.dart';
-import '../custom_hooks/use_form_field_state_key.dart';
-import '../widgets/show_indicator.dart';
-import '../widgets/rounded_button.dart';
 import '../../extensions/context_extension.dart';
 import '../../model/use_cases/auth/email/sign_in_with_email_and_password.dart';
 import '../../model/use_cases/auth/email/create_user_with_email_and_password.dart';
-import '../../utils/provider.dart';
+import '../custom_hooks/use_form_field_state_key.dart';
+import '../widgets/show_indicator.dart';
+import '../widgets/rounded_button.dart';
 import '../pages/tabs_page.dart';
+import '../../utils/logger.dart';
+import '../../utils/provider.dart';
 
 class LoginPage extends HookConsumerWidget {
   const LoginPage({Key? key}) : super(key: key);

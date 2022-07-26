@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-import './thumbnail.dart';
 import '../../model/entities/material.dart';
 import '../pages/material/material_detail_page.dart';
-import '../pages/image_viewer/image_viewer.dart';
+import './thumbnail.dart';
 
 class MaterialItem extends StatelessWidget {
   const MaterialItem({Key? key, required this.material}) : super(key: key);

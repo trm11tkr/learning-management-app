@@ -9,11 +9,11 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:path_provider/path_provider.dart';
 
-import './utils/logger.dart';
-import './presentation/pages/tabs_page.dart';
-import './config/custom_theme_data.dart';
-import './presentation/pages/login_page.dart';
 import './model/use_cases/image_compress.dart';
+import './config/custom_theme_data.dart';
+import './utils/logger.dart';
+import './presentation/pages/login_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

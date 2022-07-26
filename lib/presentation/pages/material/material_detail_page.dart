@@ -1,16 +1,16 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../widgets/thumbnail.dart';
+import '../../../extensions/context_extension.dart';
+import '../../../extensions/exception_extension.dart';
 import '../../../model/entities/material.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/use_cases/record_controller.dart';
 import 'edit_material_page.dart';
+import '../../widgets/thumbnail.dart';
 import '../../widgets/show_indicator.dart';
-import '../../../extensions/context_extension.dart';
-import '../../../extensions/exception_extension.dart';
 
 class MaterialDetailPage extends HookConsumerWidget {
   const MaterialDetailPage({

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../../extensions/int_extension.dart';
+import '../../../extensions/exception_extension.dart';
 import '../../../model/use_cases/record_controller.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
 import '../material/edit_material_page.dart';
-import '../../../extensions/exception_extension.dart';
 import '../../widgets/show_indicator.dart';
+import '../../widgets/show_picker.dart';
 
 final _key = GlobalKey<FormState>();
 
@@ -22,10 +23,13 @@ class EditRecordPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
-    final materialData = ref.watch(materialDataProvider);
+    final materialItem = ref.watch(materialDataProvider.notifier).getPickItem();
     final timerController = useTextEditingController();
     final materialController = useTextEditingController();
     final descriptionController = useTextEditingController();
+
+    final materialIdState = useState<String?>(null);
+    final timerState = useState<int?>(null);
 
     useEffect(() {
       if (data != null) {
@@ -33,54 +37,15 @@ class EditRecordPage extends HookConsumerWidget {
             .watch(materialDataProvider.notifier)
             .getById(data!.materialId)
             .title;
-        timerController.text = '${data?.learningTime}分';
+        timerController.text = data?.learningTime.toHMString() ?? '-';
         descriptionController.text = data?.description.toString() ?? '';
+        materialIdState.value = ref
+            .watch(materialDataProvider.notifier)
+            .getById(data!.materialId)
+            .id;
+        timerState.value = data?.learningTime;
       }
     }, const []);
-
-    void showPicker({
-      required controller,
-      required List<String> pickerItems,
-      required List<String> settingValues,
-    }) {
-      var selectedIndex = 0;
-
-      showCupertinoModalPopup<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return SizedBox(
-            height: 300,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                magnification: 1.2,
-                squeeze: 1.2,
-                useMagnifier: true,
-                itemExtent: 40,
-                children: pickerItems
-                    .map((item) => Container(
-                          width: mediaQuery.size.width * 0.7,
-                          child: Text(
-                            item,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                          ),
-                        ))
-                    .toList(),
-                onSelectedItemChanged: (int index) {
-                  selectedIndex = index;
-                },
-              ),
-            ),
-          );
-        },
-      ).then((_) {
-        controller.text = pickerItems[selectedIndex];
-      });
-    }
 
     return Scaffold(
       appBar: AppBar(title: data == null ? const Text('登録') : const Text('編集')),
@@ -96,21 +61,25 @@ class EditRecordPage extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   TextFormField(
+                    decoration: const InputDecoration(label: Text('学習教材')),
                     textAlign: TextAlign.end,
                     controller: materialController,
-                    decoration: const InputDecoration(label: Text('学習教材')),
-                    onTap: () {
-                      //     // キーボードが出ないようにする
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      showPicker(
-                        controller: materialController,
-                        pickerItems: materialData
-                            .map((material) => material.title)
-                            .toList(),
-                        settingValues: materialData
-                            .map((material) => material.id)
-                            .toList(),
-                      );
+                    readOnly: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onTap: () async {
+                      await showMapItemPicker(
+                              context: context,
+                              items: materialItem,
+                              title: '学習教材')
+                          .then((value) {
+                        if (value != null) {
+                          materialIdState.value = value;
+                          final material = ref
+                              .watch(materialDataProvider.notifier)
+                              .getById(value);
+                          materialController.text = material.title;
+                        }
+                      });
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -132,30 +101,23 @@ class EditRecordPage extends HookConsumerWidget {
                     height: 50,
                   ),
                   TextFormField(
+                    decoration: const InputDecoration(label: Text('学習時間')),
                     textAlign: TextAlign.end,
                     controller: timerController,
-                    decoration: const InputDecoration(label: Text('学習時間')),
-                    onTap: () {
-                      // キーボードが出ないようにする
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      final settingValues = [
-                        '15',
-                        '30',
-                        '60',
-                        '90',
-                        '120',
-                        '150',
-                        '180',
-                        '210',
-                        '240',
-                        '300'
-                      ];
-                      showPicker(
-                        controller: timerController,
-                        pickerItems:
-                            settingValues.map((value) => '$value分').toList(),
-                        settingValues: settingValues,
-                      );
+                    readOnly: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onTap: () async {
+                      await showPickerNumberFormatValue(
+                        context: context,
+                        title: '学習時間',
+                        selectedStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                      ).then((value) {
+                        if (value != null) {
+                          timerState.value = value;
+                          timerController.text = value.toHMString();
+                        }
+                      });
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -178,36 +140,38 @@ class EditRecordPage extends HookConsumerWidget {
                       if (_key.currentState?.validate() != true) {
                         return;
                       }
-
-                      _key.currentState?.save();
-                      final materialId = ref
-                          .watch(materialDataProvider.notifier)
-                          .getByTitle(materialController.text)
-                          .id;
                       showIndicator(context);
                       if (data != null) {
+                        if (materialIdState.value == null) {
+                          return;
+                        }
                         final result = await ref
                             .read(recordProvider.notifier)
                             .update(data!.copyWith(
-                                materialId: materialId,
-                                learningTime: int.parse(
-                                    timerController.text.replaceFirst("分", "")),
+                                materialId: materialIdState.value!,
+                                learningTime: timerState.value!,
                                 description: descriptionController.text));
                         result.when(
                           success: () {},
                           failure: (e) {
-                            showOkAlertDialog(context: context, title: e.errorMessage);
+                            showOkAlertDialog(
+                                context: context, title: e.errorMessage);
                           },
                         );
                       } else {
                         final result =
                             await ref.read(recordProvider.notifier).create(
-                                  materialId,
-                                  int.parse(
-                                    timerController.text.replaceFirst("分", ""),
-                                  ),
+                                  materialIdState.value!,
+                                  timerState.value!,
                                   descriptionController.text,
                                 );
+                        result.when(
+                          success: () {},
+                          failure: (e) {
+                            showOkAlertDialog(
+                                context: context, title: e.errorMessage);
+                          },
+                        );
                       }
                       dismissIndicator(context);
                       Navigator.of(context).pop();
