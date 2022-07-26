@@ -11,6 +11,8 @@ import '../../../model/entities/record.dart';
 import '../material/edit_material_page.dart';
 import '../../../extensions/exception_extension.dart';
 import '../../widgets/show_indicator.dart';
+import '../../widgets/show_picker.dart';
+import '../../../extensions/int_extension.dart';
 
 final _key = GlobalKey<FormState>();
 
@@ -27,14 +29,22 @@ class EditRecordPage extends HookConsumerWidget {
     final materialController = useTextEditingController();
     final descriptionController = useTextEditingController();
 
+    final materialIdState = useState<String?>(null);
+    final timerState = useState<int?>(null);
+
     useEffect(() {
       if (data != null) {
         materialController.text = ref
             .watch(materialDataProvider.notifier)
             .getById(data!.materialId)
             .title;
-        timerController.text = '${data?.learningTime}分';
+        timerController.text = data?.learningTime.toHMString() ?? '-';
         descriptionController.text = data?.description.toString() ?? '';
+        materialIdState.value = ref
+            .watch(materialDataProvider.notifier)
+            .getById(data!.materialId)
+            .id;
+        timerState.value = data?.learningTime;
       }
     }, const []);
 
@@ -99,7 +109,7 @@ class EditRecordPage extends HookConsumerWidget {
                     textAlign: TextAlign.end,
                     controller: materialController,
                     decoration: const InputDecoration(label: Text('学習教材')),
-                    onTap: () {
+                    onTap: () async {
                       //     // キーボードが出ないようにする
                       FocusScope.of(context).requestFocus(FocusNode());
                       showPicker(
@@ -132,30 +142,23 @@ class EditRecordPage extends HookConsumerWidget {
                     height: 50,
                   ),
                   TextFormField(
+                    decoration: const InputDecoration(label: Text('学習時間')),
                     textAlign: TextAlign.end,
                     controller: timerController,
-                    decoration: const InputDecoration(label: Text('学習時間')),
-                    onTap: () {
-                      // キーボードが出ないようにする
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      final settingValues = [
-                        '15',
-                        '30',
-                        '60',
-                        '90',
-                        '120',
-                        '150',
-                        '180',
-                        '210',
-                        '240',
-                        '300'
-                      ];
-                      showPicker(
-                        controller: timerController,
-                        pickerItems:
-                            settingValues.map((value) => '$value分').toList(),
-                        settingValues: settingValues,
-                      );
+                    readOnly: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    onTap: () async {
+                      await showPickerNumberFormatValue(
+                        context: context,
+                        title: '学習時間',
+                        selectedStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                      ).then((value) {
+                        if (value != null) {
+                          timerState.value = value;
+                          timerController.text = value.toHMString();
+                        }
+                      });
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -178,8 +181,6 @@ class EditRecordPage extends HookConsumerWidget {
                       if (_key.currentState?.validate() != true) {
                         return;
                       }
-
-                      _key.currentState?.save();
                       final materialId = ref
                           .watch(materialDataProvider.notifier)
                           .getByTitle(materialController.text)
@@ -190,22 +191,20 @@ class EditRecordPage extends HookConsumerWidget {
                             .read(recordProvider.notifier)
                             .update(data!.copyWith(
                                 materialId: materialId,
-                                learningTime: int.parse(
-                                    timerController.text.replaceFirst("分", "")),
+                                learningTime: timerState.value!,
                                 description: descriptionController.text));
                         result.when(
                           success: () {},
                           failure: (e) {
-                            showOkAlertDialog(context: context, title: e.errorMessage);
+                            showOkAlertDialog(
+                                context: context, title: e.errorMessage);
                           },
                         );
                       } else {
                         final result =
                             await ref.read(recordProvider.notifier).create(
                                   materialId,
-                                  int.parse(
-                                    timerController.text.replaceFirst("分", ""),
-                                  ),
+                                  timerState.value!,
                                   descriptionController.text,
                                 );
                       }
