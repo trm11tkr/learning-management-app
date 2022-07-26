@@ -2,6 +2,35 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_picker/flutter_picker.dart';
 
+Future<String?> showMapItemPicker({
+  required BuildContext context,
+  required List<Map> items,
+  String? title,
+  Widget? pickerDelimiter,
+  String Function(int)? onFormatValue,
+  void Function(Picker, List<int>)? onConfirm,
+  TextStyle? selectedStyle,
+}) async {
+  int? selectedIndex;
+  await Picker(
+          adapter: PickerDataAdapter<String>(
+            pickerdata: items.map((e) => e['display']).toList(),
+          ),
+          hideHeader: true,
+          title: Text(title ?? 'セットしてください。'),
+          confirmText: "決定",
+          cancelText: "キャンセル",
+          onConfirm: onConfirm ??
+              (Picker picker, List<int> value) {
+                selectedIndex = value.first;
+              })
+      .showDialog(context);
+  if (selectedIndex != null) {
+    return items[selectedIndex!]['value'];
+  }
+  return null;
+}
+
 Future<int?> showPickerNumberFormatValue({
   required BuildContext context,
   String? title,

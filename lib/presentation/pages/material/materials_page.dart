@@ -15,8 +15,7 @@ class MaterialsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final List<MaterialData> materialList =
-        ref.watch(materialDataProvider);
+    final List<MaterialData> materialList = ref.watch(materialDataProvider);
 
     /// カスタムフック
     useEffectOnce(() {

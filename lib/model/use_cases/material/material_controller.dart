@@ -186,8 +186,10 @@ class MaterialDataController extends StateNotifier<List<MaterialData>> {
     return state.firstWhere((material) => material.id == materialId);
   }
 
-  // タイトルから検索（後から変更）
-  MaterialData getByTitle(String title) {
-    return state.firstWhere((material) => material.title == title);
+
+  List<Map<String, String>> getPickItem() {
+    return state
+        .map((material) => {'value': material.id, 'display': material.title})
+        .toList();
   }
 }
