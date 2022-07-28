@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 import '../../../extensions/exception_extension.dart';
+import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
 import '../../../model/use_cases/record_controller.dart';
 import '../../../model/use_cases/my_profile/fetch_my_profile.dart';
@@ -19,6 +20,7 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(fetchMyProfileProvider).value;
     final List<Record> recordList = ref.watch(recordProvider);
+
     final List<Record> recentRecordList =
         ref.watch(recordProvider.notifier).recentRecords;
     final mediaQuery = MediaQuery.of(context);
@@ -26,8 +28,18 @@ class HomePage extends HookConsumerWidget {
     /// カスタムフック
     useEffectOnce(() {
       Future(() async {
-        final result = await ref.read(recordProvider.notifier).fetch();
-        result.when(
+        ref.watch(materialDataProvider);
+        final resultMaterial =
+            await ref.read(materialDataProvider.notifier).fetch();
+        resultMaterial.when(
+          success: () {},
+          failure: (e) {
+            showOkAlertDialog(context: context, title: e.errorMessage);
+          },
+        );
+
+        final resultRecord = await ref.read(recordProvider.notifier).fetch();
+        resultRecord.when(
           success: () {},
           failure: (e) {
             showOkAlertDialog(context: context, title: e.errorMessage);
