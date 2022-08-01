@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
+import '../../../extensions/int_extension.dart';
 import '../../../extensions/exception_extension.dart';
 import '../../../model/use_cases/material/material_controller.dart';
 import '../../../model/entities/record.dart';
@@ -58,7 +59,7 @@ class HomePage extends HookConsumerWidget {
               margin: const EdgeInsets.only(top: 8, left: 5, right: 5),
               elevation: 5,
               child: Text(
-                '目標学習時間:${profile?.targetTime}分/日',
+                '目標学習時間:${profile?.targetTime?.toHMString() ?? "0分"}/日',
                 style: const TextStyle(fontSize: 25),
               ),
             ),
