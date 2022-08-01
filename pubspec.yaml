@@ -76,6 +76,7 @@ dependencies:
   uuid: ^3.0.6
   hashids2: ^2.0.0
   flutter_picker: ^2.0.5
+  cloud_functions: ^3.3.3
   
 
 dev_dependencies:
